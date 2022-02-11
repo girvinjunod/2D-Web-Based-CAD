@@ -1,64 +1,72 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap"
+      rel="stylesheet"
+    />
     <title>2D CAD</title>
-</head>
-<body>
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="header">How to Use</h2>
-        <span class="close">&times;</span>
-      </div>
-      <div class="modal-body">
-      <h3>Membuat line, square, rectangle, dan polygon</h3>
-      <h3>Menggeser titik kontrol/simpul dengan mouse</h3>
-      <h3>Mengubah panjang garis</h3>
-      <h3>Mengubah ukuran sisi persegi</h3>
-      <h3>Mengubah warna poligon</h3>
-      <h3>Save, load, dan clear</h3>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="container-canvas">
-      <canvas id="glCanvas"></canvas>
-    </div>
-    <div class="container-sidebar">
-      <h2>2D CAD</h2>
-      <div class="options">
-      Ini Option Menu
-      </div>
-      <div id="help-btn">
-      Help
+  </head>
+  <body>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="header">How to Use</h2>
+          <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+          <h3>Membuat line, square, rectangle, dan polygon</h3>
+          <h3>Menggeser titik kontrol/simpul dengan mouse</h3>
+          <h3>Mengubah panjang garis</h3>
+          <h3>Mengubah ukuran sisi persegi</h3>
+          <h3>Mengubah warna poligon</h3>
+          <h3>Save, load, dan clear</h3>
+        </div>
       </div>
     </div>
-  </div>
 
+    <div class="container">
+      <div class="container-canvas">
+        <canvas id="glCanvas"> Canvas failed to load. </canvas>
+      </div>
+      <div class="container-sidebar">
+        <h2>2D CAD</h2>
+        <div class="options">
+          <div class="options-shape">
+            <label class="options-label">Shape</label>
+            <select class="shape-selector">
+              <option value="0">Line</option>
+              <option value="1">Square</option>
+              <option value="2">Rectangle</option>
+              <option value="3">Polygon</option>
+            </select>
+          </div>
+          <div class="options-width">
+            <label class="options-label">Size</label>
+            <input type="range" name="width-slider" id="width-slider" />
+          </div>
+        </div>
+        <div id="help-btn">Help</div>
+      </div>
+    </div>
 
-<script>
-var modal = document.getElementById("myModal");
-var btn = document.getElementById("help-btn");
-var span = document.getElementsByClassName("close")[0];
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-span.onclick = function() {
-  modal.style.display = "none";
-}
+    <script>
+      var modal = document.getElementById("myModal");
+      var btn = document.getElementById("help-btn");
+      var span = document.getElementsByClassName("close")[0];
+      btn.onclick = function () {
+        modal.style.display = "block";
+      };
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+    </script>
 
-</script>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
-
-
