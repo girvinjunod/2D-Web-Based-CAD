@@ -52,6 +52,28 @@ body {
   margin-top: 25px;
 }
 
+.size-width {
+  margin-top: 20px;
+}
+
+.options-color, .options-number-nodes {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+#color-picker {
+  width: 4rem;
+  border-radius: 5px;
+}
+
+#number-nodes{
+  width: 4rem;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+
 #help-btn {
   margin-top: 10px;
   margin-bottom: 10px;
