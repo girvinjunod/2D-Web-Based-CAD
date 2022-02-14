@@ -3,7 +3,9 @@ const gl = canvas.getContext('webgl')
 
 let x, y
 let shapeIdx = 0
-let size = 50
+let size = 0.5
+
+let linePoints = []
 
 const resizeCanvas = (gl) => {
   gl.canvas.width = (9 / 12) * window.innerWidth
@@ -34,7 +36,8 @@ window.onload = function main() {
 
   let sizeSelector = document.getElementById('size-selector')
   sizeSelector.addEventListener('change', (e) => {
-    size = e.target.value
+    // scale size to 0.01-1
+    size = parseInt(e.target.value) / 100 || 0.01
     console.log(`Selected size: ${size}`)
   })
 
@@ -43,12 +46,17 @@ window.onload = function main() {
       coordinate = getCoordinate(e)
       console.log(`Current X: ${x}`)
       console.log(`Current Y: ${y}`)
-      // draw line
-      // render line
+      linePoints.push(x, y, x + size, y)
+      console.log(`Line Points: ${linePoints}`)
+      render()
     }
   })
 
   gl.clearColor(0.6, 0.75, 0.9, 1)
 
+  gl.clear(gl.COLOR_BUFFER_BIT)
+}
+
+function render() {
   gl.clear(gl.COLOR_BUFFER_BIT)
 }
