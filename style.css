@@ -56,7 +56,8 @@ body {
   margin-top: 20px;
 }
 
-.options-color, .options-number-nodes {
+.options-color,
+.options-number-nodes {
   display: flex;
   flex-direction: column;
   margin-top: 20px;
@@ -67,12 +68,11 @@ body {
   border-radius: 5px;
 }
 
-#number-nodes{
+#number-nodes {
   width: 4rem;
   border-radius: 5px;
   padding: 5px;
 }
-
 
 #help-btn {
   margin-top: 10px;

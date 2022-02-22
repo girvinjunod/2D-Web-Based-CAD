@@ -52,13 +52,18 @@
           </div>
           <div class="options-color">
             <label class="options-label">Color</label>
-            <input type="color" id="color-picker" name="color-picker">
+            <input type="color" id="color-picker" name="color-picker" />
           </div>
           <div class="options-number-nodes">
             <label class="options-label">Number of Polygon Nodes</label>
-            <input type="number" id="number-nodes" name="number-nodes" min="3" value="3">
+            <input
+              type="number"
+              id="number-nodes"
+              name="number-nodes"
+              min="3"
+              value="3"
+            />
           </div>
-        
         </div>
         <div id="help-btn">Help</div>
       </div>
@@ -75,7 +80,22 @@
         modal.style.display = 'none'
       }
     </script>
-
     <script src="script.js"></script>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+      attribute vec4 vPosition;
+      attribute vec4 vColor;
+      varying vec4 fColor;
+      void main() {
+        gl_Position = vPosition;
+        fColor = vColor;
+      }
+    </script>
+    <script id="fragment-shader" type="x-shader/x-fragment">
+      precision mediump float;
+      varying vec4 fColor;
+      void main() {
+        gl_FragColor = fColor;
+      }
+    </script>
   </body>
 </html>
