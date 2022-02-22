@@ -13,7 +13,7 @@
     <title>2D CAD</title>
   </head>
   <body>
-    <div id="myModal" class="modal">
+    <div id="modal" class="modal">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="header">How to Use</h2>
@@ -72,18 +72,6 @@
         <div id="help-btn">Help</div>
       </div>
     </div>
-
-    <script>
-      var modal = document.getElementById('myModal')
-      var btn = document.getElementById('help-btn')
-      var span = document.getElementsByClassName('close')[0]
-      btn.onclick = function () {
-        modal.style.display = 'block'
-      }
-      span.onclick = function () {
-        modal.style.display = 'none'
-      }
-    </script>
     <script src="script.js"></script>
     <script id="vertex-shader" type="x-shader/x-vertex">
       attribute vec4 vPosition;

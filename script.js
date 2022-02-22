@@ -7,7 +7,7 @@ let cBufferId = gl.createBuffer() // color buffer
 let x, y
 let shapeIdx = 0 // selected shape; 0: line
 let size = 0.5 // selected size
-let color = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0] // selected color // TODO: Fix color bug, adjust color on selection
+let color = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0] // selected color
 let isMoveMode = false // move mode
 let isMoved = false // prevent click event from firing when moving
 let selectedMovePointIdx = -1 // closest point to be moved
@@ -15,6 +15,13 @@ let selectedMoveShapeIdx = -1 // closest shape to be moved; 0: line
 
 let linePoints = []
 let lineColors = []
+
+let polygonPoints = []
+let polygonColors = []
+let currNumPoly = 0
+let arrPolygonPoints = []
+let arrPolygonColors = []
+let arrNumPoly = []
 
 const MAX_NUM_VERTICES = 20000
 const CLOSEST_POINT_THRESHOLD = 0.01
@@ -87,7 +94,7 @@ window.onload = function main() {
   colorSelector.addEventListener('change', (e) => {
     let {r, g, b} = hexToRgb(e.target.value)
     color = [r, g, b, 1.0, r, g, b, 1.0]
-    console.log(color)
+    // console.log(color)
   })
 
   let sizeSelector = document.getElementById('size-selector')
@@ -102,6 +109,7 @@ window.onload = function main() {
     isMoveMode = e.target.checked
   })
 
+  //Move object
   canvas.addEventListener('mousedown', (e) => {
     if (isMoveMode) {
       isMoved = false
@@ -109,43 +117,63 @@ window.onload = function main() {
       getClosestPointFrom(x, y)
     }
   })
-
   canvas.addEventListener('mousemove', (e) => {
     if (isMoveMode) {
       isMoved = true
     }
   })
-
-  canvas.addEventListener('mouseup', (e) => {
+  canvas.addEventListener('mouseup', (e) => { 
     if (isMoveMode && isMoved) {
       getCoordinate(e)
       if (selectedMoveShapeIdx === 0) {  // TODO: Add other shapes
         moveLinePoints()
-      } else if(selectedMoveShapeIdx === 1) {
+      } else{
 
-      } else if(selectedMoveShapeIdx === 2) {
-
-      } else if(selectedMoveShapeIdx === 3) {
-
-      } else {
-        
       }
       render()
     }
   })
 
+  //When canvas is clicked and not in move mode
   canvas.addEventListener('click', (e) => {
     if (!isMoveMode) {
+      getCoordinate(e)
       if (shapeIdx == 0) {
-        coordinate = getCoordinate(e)
         console.log(`Current X: ${x}`)
         console.log(`Current Y: ${y}`)
         linePoints.push(x, y, x + size, y)
         console.log(`Line Points: ${linePoints}`)
         lineColors.push(color)
         console.log(`Line Colors: ${lineColors}`)
-        render()
+      } else if(shapeIdx == 1) { //square
+        
+      } else if(shapeIdx == 2) { //rectangle
+        
+      } else if(shapeIdx == 3) { //polygon
+        let numPoly = parseInt(document.getElementById('number-nodes').value)
+        console.log(numPoly)
+        
+        polygonPoints.push(x, y)
+        polygonColors.push(color, color)
+        if (currNumPoly < numPoly  - 1) {  //not last node
+          currNumPoly+=1
+        } else { //last polygon node
+          arrPolygonPoints.push(polygonPoints)
+          arrPolygonColors.push(polygonColors)
+          arrNumPoly.push(numPoly)
+          polygonPoints = []
+          polygonColors = []
+          currNumPoly=0
+          // console.log(arrPolygonPoints)
+          // console.log(arrPolygonColors)
+          //Save polygon and reset
+        }
+
+      } else{
+        
       }
+      
+      render()
     }
   })
 
@@ -188,7 +216,19 @@ function render() {
   }
   // END: Draw line
 
-  
+
+  // START: Draw Polygon
+  for (let i = 0; i < arrPolygonPoints.length; i++) { //Draw each polygon
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrPolygonPoints[i]));
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrPolygonColors[i]));
+    if (arrPolygonPoints[i].length != 0) {
+      gl.drawArrays(gl.LINE_LOOP, 0, arrNumPoly[i])
+    }
+  }
+  // END: Draw Polygon
 }
 
 function initShaders(gl) {
@@ -235,4 +275,15 @@ function flatten(v) {
   }
 
   return flatArr
+}
+
+//Help button
+var modal = document.getElementById('modal')
+var btn = document.getElementById('help-btn')
+var span = document.getElementsByClassName('close')[0]
+btn.onclick = function () {
+  modal.style.display = 'block'
+}
+span.onclick = function () {
+  modal.style.display = 'none'
 }
