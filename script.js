@@ -16,6 +16,11 @@ let selectedMoveShapeIdx = -1 // closest shape to be moved; 0: line
 let linePoints = []
 let lineColors = []
 
+var squarePoints = [];
+var squareColors = [];
+var arrayOfSquarePoints = [];
+var arrayOfSquareColors = [];
+
 let polygonPoints = []
 let polygonColors = []
 let currNumPoly = 0
@@ -146,7 +151,29 @@ window.onload = function main() {
         lineColors.push(color)
         console.log(`Line Colors: ${lineColors}`)
       } else if(shapeIdx == 1) { //square
-        
+        squarePoints.push(x + size);
+        squarePoints.push(y);
+        console.log(squarePoints)
+
+        squarePoints.push(x);
+        squarePoints.push(y);
+        console.log(squarePoints)
+
+        squarePoints.push(x + size);
+        squarePoints.push(y - size);
+        console.log(squarePoints)
+
+        squarePoints.push(x);
+        squarePoints.push(y - size);
+        console.log(squarePoints)
+
+        squareColors.push(color);
+        squareColors.push(color);
+
+        arrayOfSquarePoints.push(squarePoints);
+        arrayOfSquareColors.push(squareColors);
+
+        render();
       } else if(shapeIdx == 2) { //rectangle
         
       } else if(shapeIdx == 3) { //polygon
@@ -213,6 +240,24 @@ function render() {
 
   for (let i = 0; i < linePoints.length / 2 - 1; i++) {
     gl.drawArrays(gl.LINES, 2 * i, 2)
+  }
+  // END: Draw line
+
+  // START: Draw Square
+  var m = 0;
+  for (var j = 0; j < arrayOfSquarePoints.length; j++) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquarePoints[j]));
+    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquareColors[j]));
+    if (arrayOfSquarePoints[j].length != 0) {
+      // for (var i = 0; i < arrayOfSquarePoints[j].length / 4 - 1; i++) {
+      //   gl.drawArrays(gl.LINE_LOOP, 4 * i, 4);
+      // }
+      gl.drawArrays(gl.TRIANGLES, m, 4);
+      gl.drawArrays(gl.TRIANGLES, m + 1, 4);
+      m = m + 4;
+    }
   }
   // END: Draw line
 
