@@ -63,6 +63,16 @@ body {
   margin-top: 20px;
 }
 
+.options-move {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+
+.options-move input {
+  margin-right: 10px;
+}
+
 #color-picker {
   width: 4rem;
   border-radius: 5px;

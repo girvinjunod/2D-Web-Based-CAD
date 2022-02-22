@@ -5,14 +5,19 @@ let bufferId = gl.createBuffer() // point/vertex buffer
 let cBufferId = gl.createBuffer() // color buffer
 
 let x, y
-let shapeIdx = 0 // selected shape
+let shapeIdx = 0 // selected shape; 0: line
 let size = 0.5 // selected size
 let color = [0.0, 0.0, 0.0, 1.0] // selected color // TODO: Fix color bug, adjust color on selection
+let isMoveMode = false // move mode
+let isMoved = false // prevent click event from firing when moving
+let selectedMovePointIdx = -1 // closest point to be moved
+let selectedMoveShapeIdx = -1 // closest shape to be moved; 0: line
 
 let linePoints = []
 let lineColors = []
 
 const MAX_NUM_VERTICES = 20000
+const CLOSEST_POINT_THRESHOLD = 0.01
 
 const resizeCanvas = (gl) => {
   gl.canvas.width = (9 / 12) * window.innerWidth
@@ -22,6 +27,33 @@ const resizeCanvas = (gl) => {
 const getCoordinate = (e) => {
   x = (2 * e.clientX) / canvas.width - 1
   y = (2 * (canvas.height - e.clientY)) / canvas.height - 1
+}
+
+const getClosestPointFrom = (x, y) => {
+  // Get closest point to (x, y)
+  console.log(`Get Closest Point From: ${x}, ${y}`)
+
+  let closestDistance = Infinity
+  for (let i = 0; i < linePoints.length; i += 2) {
+    currLinePoint = [linePoints[i], linePoints[i + 1]]
+    dx = Math.abs(currLinePoint[0] - x)
+    dy = Math.abs(currLinePoint[1] - y)
+    if (
+      dx < CLOSEST_POINT_THRESHOLD &&
+      dy < CLOSEST_POINT_THRESHOLD &&
+      dx + dy < closestDistance
+    ) {
+      closestDistance = dx + dy
+      selectedMovePointIdx = i
+      selectedMoveShapeIdx = 0
+      console.log(`Selected move point idx: ${selectedMovePointIdx}`)
+    }
+  }
+}
+
+const moveLinePoints = () => {
+  linePoints[selectedMovePointIdx] = x
+  linePoints[selectedMovePointIdx + 1] = y
 }
 
 window.onload = function main() {
@@ -48,16 +80,49 @@ window.onload = function main() {
     console.log(`Selected size: ${size}`)
   })
 
-  canvas.addEventListener('click', (e) => {
-    if (shapeIdx == 0) {
-      coordinate = getCoordinate(e)
-      console.log(`Current X: ${x}`)
-      console.log(`Current Y: ${y}`)
-      linePoints.push(x, y, x + size, y)
-      console.log(`Line Points: ${linePoints}`)
-      lineColors.push(color)
-      console.log(`Line Colors: ${lineColors}`)
+  let moveMode = document.getElementById('move-mode')
+  moveMode.addEventListener('change', (e) => {
+    isMoveMode = e.target.checked
+  })
+
+  canvas.addEventListener('mousedown', (e) => {
+    if (isMoveMode) {
+      isMoved = false
+      getCoordinate(e)
+      getClosestPointFrom(x, y)
+    }
+  })
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (isMoveMode) {
+      isMoved = true
+    }
+  })
+
+  canvas.addEventListener('mouseup', (e) => {
+    if (isMoveMode && isMoved) {
+      getCoordinate(e)
+      if (selectedMoveShapeIdx === 0) {
+        moveLinePoints()
+      } else {
+        // TODO: Add other shapes
+      }
       render()
+    }
+  })
+
+  canvas.addEventListener('click', (e) => {
+    if (!isMoveMode) {
+      if (shapeIdx == 0) {
+        coordinate = getCoordinate(e)
+        console.log(`Current X: ${x}`)
+        console.log(`Current Y: ${y}`)
+        linePoints.push(x, y, x + size, y)
+        console.log(`Line Points: ${linePoints}`)
+        lineColors.push(color)
+        console.log(`Line Colors: ${lineColors}`)
+        render()
+      }
     }
   })
 
