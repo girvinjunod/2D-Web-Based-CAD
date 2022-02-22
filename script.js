@@ -7,7 +7,7 @@ let cBufferId = gl.createBuffer() // color buffer
 let x, y
 let shapeIdx = 0 // selected shape; 0: line
 let size = 0.5 // selected size
-let color = [0.0, 0.0, 0.0, 1.0] // selected color // TODO: Fix color bug, adjust color on selection
+let color = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0] // selected color // TODO: Fix color bug, adjust color on selection
 let isMoveMode = false // move mode
 let isMoved = false // prevent click event from firing when moving
 let selectedMovePointIdx = -1 // closest point to be moved
@@ -56,6 +56,15 @@ const moveLinePoints = () => {
   linePoints[selectedMovePointIdx + 1] = y
 }
 
+const hexToRgb = (hex) => {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  }
+}
+
 window.onload = function main() {
   // Only continue if WebGL is available and working
   if (gl === null) {
@@ -71,6 +80,13 @@ window.onload = function main() {
   shapeSelector.addEventListener('change', (e) => {
     shapeIdx = e.target.value
     console.log(`Selected shape: ${shapeIdx}`)
+  })
+
+
+  let colorSelector = document.getElementById('color-picker')
+  colorSelector.addEventListener('change', (e) => {
+    let {r, g, b} = hexToRgb(e.target.value)
+    color = [r, g, b, 1.0, r, g, b, 1.0]
   })
 
   let sizeSelector = document.getElementById('size-selector')
