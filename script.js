@@ -59,9 +59,9 @@ const moveLinePoints = () => {
 const hexToRgb = (hex) => {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
+    r: parseInt(result[1], 16)/255,
+    g: parseInt(result[2], 16)/255,
+    b: parseInt(result[3], 16)/255
   }
 }
 
@@ -87,6 +87,7 @@ window.onload = function main() {
   colorSelector.addEventListener('change', (e) => {
     let {r, g, b} = hexToRgb(e.target.value)
     color = [r, g, b, 1.0, r, g, b, 1.0]
+    console.log(color)
   })
 
   let sizeSelector = document.getElementById('size-selector')
@@ -118,10 +119,16 @@ window.onload = function main() {
   canvas.addEventListener('mouseup', (e) => {
     if (isMoveMode && isMoved) {
       getCoordinate(e)
-      if (selectedMoveShapeIdx === 0) {
+      if (selectedMoveShapeIdx === 0) {  // TODO: Add other shapes
         moveLinePoints()
+      } else if(selectedMoveShapeIdx === 1) {
+
+      } else if(selectedMoveShapeIdx === 2) {
+
+      } else if(selectedMoveShapeIdx === 3) {
+
       } else {
-        // TODO: Add other shapes
+        
       }
       render()
     }
@@ -180,6 +187,8 @@ function render() {
     gl.drawArrays(gl.LINES, 2 * i, 2)
   }
   // END: Draw line
+
+  
 }
 
 function initShaders(gl) {
