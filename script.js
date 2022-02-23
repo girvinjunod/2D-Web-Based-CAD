@@ -21,6 +21,8 @@ var squarePoints = []
 var squareColors = []
 var arrayOfSquarePoints = []
 var arrayOfSquareColors = []
+var arrayFirst = []
+var mouseClick = false
 
 let polygonPoints = []
 let polygonColors = []
@@ -150,16 +152,53 @@ window.onload = function main() {
 
   //Move object
   canvas.addEventListener('mousedown', (e) => {
+    mouseClick = true
     if (isMoveMode) {
       isMoved = false
       getCoordinate(e)
       getClosestPointFrom(x, y)
+    }
+    if (shapeIdx == 1) {
+      arrayFirst = []
+      getCoordinate(e)
+      arrayFirst.push(x)
+      arrayFirst.push(y)
     }
   })
 
   canvas.addEventListener('mousemove', (e) => {
     if (isMoveMode) {
       isMoved = true
+    }
+    if ( shapeIdx == 1 && mouseClick) {
+      if(mouseClick){
+        getCoordinate(e)
+        var temp = Math.max((arrayFirst[0] - x), (arrayFirst[1] - y))
+  
+        squarePoints.push(arrayFirst[0]);
+        squarePoints.push(arrayFirst[1]);
+  
+        squarePoints.push(arrayFirst[0] + temp);
+        squarePoints.push(arrayFirst[1]);
+  
+        squarePoints.push(arrayFirst[0] + temp);
+        squarePoints.push(arrayFirst[1] - temp);
+  
+        squarePoints.push(arrayFirst[0]);
+        squarePoints.push(arrayFirst[1] - temp);
+  
+        squareColors.push(color);
+        squareColors.push(color);
+  
+        arrayOfSquarePoints.push(squarePoints);
+        arrayOfSquareColors.push(squareColors);
+      
+        render()
+        squarePoints = []
+        squareColors = []
+        arrayOfSquareColors.pop()
+        arrayOfSquarePoints.pop()
+      }
     }
   })
 
@@ -185,32 +224,8 @@ window.onload = function main() {
         console.log(`Line Points: ${linePoints}`)
         lineColors.push(color)
         console.log(`Line Colors: ${lineColors}`)
-      } else if (shapeIdx == 1) {
-        //square
-        squarePoints.push(x + size)
-        squarePoints.push(y)
-        console.log(squarePoints)
-
-        squarePoints.push(x)
-        squarePoints.push(y)
-        console.log(squarePoints)
-
-        squarePoints.push(x + size)
-        squarePoints.push(y - size)
-        console.log(squarePoints)
-
-        squarePoints.push(x)
-        squarePoints.push(y - size)
-        console.log(squarePoints)
-
-        squareColors.push(color)
-        squareColors.push(color)
-
-        arrayOfSquarePoints.push(squarePoints)
-        arrayOfSquareColors.push(squareColors)
-
-        render()
-      } else if (shapeIdx == 2) {
+      } 
+      else if (shapeIdx == 2) {
         //rectangle
       } else if (shapeIdx == 3) {
         //polygon
@@ -281,19 +296,19 @@ function render() {
   // END: Draw line
 
   // START: Draw Square
-  var m = 0
+  var m = 0;
   for (var j = 0; j < arrayOfSquarePoints.length; j++) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId)
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquarePoints[j]))
-    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId)
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquareColors[j]))
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquarePoints[j]));
+    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquareColors[j]));
     if (arrayOfSquarePoints[j].length != 0) {
-      // for (var i = 0; i < arrayOfSquarePoints[j].length / 4 - 1; i++) {
-      //   gl.drawArrays(gl.LINE_LOOP, 4 * i, 4);
-      // }
-      gl.drawArrays(gl.TRIANGLES, m, 4)
-      gl.drawArrays(gl.TRIANGLES, m + 1, 4)
-      m = m + 4
+      for (var i = 0; i < arrayOfSquarePoints[j].length / 4 - 1; i++) {
+        gl.drawArrays(gl.LINE_LOOP, 4 * i, 4);
+      }
+      // gl.drawArrays(gl.LINE_LOOP, m, 4);
+      // gl.drawArrays(gl.LINE_LOOP, m + 1, 4);
+      m = m + 4;
     }
   }
   // END: Draw Square
