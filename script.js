@@ -8,6 +8,7 @@ let x, y
 let shapeIdx = 0 // selected shape; 0: line, 1: square, 2: rectangle, 3: polygon
 let size = 0.5 // selected size
 let color = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0] // selected color
+var mouseClick = false
 let isMoveMode = false // move mode
 let isMoved = false // prevent click event from firing when moving
 let selectedMovePointIdx = -1 // closest point to be moved
@@ -21,8 +22,13 @@ var squarePoints = []
 var squareColors = []
 var arrayOfSquarePoints = []
 var arrayOfSquareColors = []
+
+var rectanglePoints = []
+var rectangleColors = []
+var arrayOfRectanglePoints = []
+var arrayOfRectangleColors = []
 var arrayFirst = []
-var mouseClick = false
+
 
 let polygonPoints = []
 let polygonColors = []
@@ -158,7 +164,7 @@ window.onload = function main() {
       getCoordinate(e)
       getClosestPointFrom(x, y)
     }
-    if (shapeIdx == 1) {
+    if (shapeIdx == 1 || shapeIdx == 2) {
       arrayFirst = []
       getCoordinate(e)
       arrayFirst.push(x)
@@ -170,9 +176,9 @@ window.onload = function main() {
     if (isMoveMode) {
       isMoved = true
     }
-    if ( shapeIdx == 1 && mouseClick) {
-      if(mouseClick){
-        getCoordinate(e)
+    if(mouseClick){
+      getCoordinate(e)
+      if (shapeIdx == 1) {
         var temp = Math.max((arrayFirst[0] - x), (arrayFirst[1] - y))
   
         squarePoints.push(arrayFirst[0]);
@@ -199,7 +205,35 @@ window.onload = function main() {
         arrayOfSquareColors.pop()
         arrayOfSquarePoints.pop()
       }
+
+      if (shapeIdx == 2) {
+        rectanglePoints.push(arrayFirst[0]);
+        rectanglePoints.push(arrayFirst[1]);
+  
+        rectanglePoints.push(arrayFirst[0] + x);
+        rectanglePoints.push(arrayFirst[1]);
+  
+        rectanglePoints.push(arrayFirst[0] + x);
+        rectanglePoints.push(arrayFirst[1] - y);
+  
+        rectanglePoints.push(arrayFirst[0]);
+        rectanglePoints.push(arrayFirst[1] - y);
+  
+        rectangleColors.push(color);
+        rectangleColors.push(color);
+  
+        arrayOfRectanglePoints.push(rectanglePoints);
+        arrayOfRectangleColors.push(rectangleColors);
+      
+        render()
+        rectanglePoints = []
+        rectangleColors = []
+        arrayOfRectangleColors.pop()
+        arrayOfRectanglePoints.pop()
+      }
+
     }
+    
   })
 
   canvas.addEventListener('mouseup', (e) => {
@@ -235,6 +269,9 @@ window.onload = function main() {
       arrayOfSquareColors.push(squareColors);
     
       render()
+    }
+    else if (shapeIdx == 2) {
+
     }
   })
 
@@ -333,6 +370,20 @@ function render() {
     }
   }
   // END: Draw Square
+
+  // START: Draw Rectangle
+  for (var j = 0; j < arrayOfRectanglePoints.length; j++) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfRectanglePoints[j]));
+    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfRectangleColors[j]));
+    if (arrayOfRectanglePoints[j].length != 0) {
+      for (var i = 0; i < arrayOfRectanglePoints[j].length / 4 - 1; i++) {
+        gl.drawArrays(gl.LINE_LOOP, 4 * i, 4);
+      }
+    }
+  }
+  // END: Draw Rectangle
 
   // START: Draw Polygon
   for (let i = 0; i < arrPolygonPoints.length; i++) {
