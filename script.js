@@ -203,12 +203,37 @@ window.onload = function main() {
   })
 
   canvas.addEventListener('mouseup', (e) => {
+    mouseClick = false
     if (isMoveMode && isMoved) {
       getCoordinate(e)
       if (selectedMoveShapeIdx === 0) moveNonPolygonPoints(linePoints)
       if (selectedMoveShapeIdx === 1) moveNonPolygonPoints(squarePoints)
       // if (selectedMoveShapeIdx === 2) moveNonPolygonPoints() // TODO
       if (selectedMoveShapeIdx === 3) movePolygonPoints()
+      render()
+    }
+    if (shapeIdx == 1) {
+      getCoordinate(e)
+      var temp = Math.max((arrayFirst[0] - x), (arrayFirst[1] - y))
+
+      squarePoints.push(arrayFirst[0]);
+      squarePoints.push(arrayFirst[1]);
+
+      squarePoints.push(arrayFirst[0] + temp);
+      squarePoints.push(arrayFirst[1]);
+
+      squarePoints.push(arrayFirst[0] + temp);
+      squarePoints.push(arrayFirst[1] - temp);
+
+      squarePoints.push(arrayFirst[0]);
+      squarePoints.push(arrayFirst[1] - temp);
+
+      squareColors.push(color);
+      squareColors.push(color);
+
+      arrayOfSquarePoints.push(squarePoints);
+      arrayOfSquareColors.push(squareColors);
+    
       render()
     }
   })
@@ -296,7 +321,6 @@ function render() {
   // END: Draw line
 
   // START: Draw Square
-  var m = 0;
   for (var j = 0; j < arrayOfSquarePoints.length; j++) {
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquarePoints[j]));
@@ -306,9 +330,6 @@ function render() {
       for (var i = 0; i < arrayOfSquarePoints[j].length / 4 - 1; i++) {
         gl.drawArrays(gl.LINE_LOOP, 4 * i, 4);
       }
-      // gl.drawArrays(gl.LINE_LOOP, m, 4);
-      // gl.drawArrays(gl.LINE_LOOP, m + 1, 4);
-      m = m + 4;
     }
   }
   // END: Draw Square
