@@ -16,10 +16,10 @@ let selectedMoveShapeIdx = -1 // closest shape to be moved; 0: line
 let linePoints = []
 let lineColors = []
 
-var squarePoints = [];
-var squareColors = [];
-var arrayOfSquarePoints = [];
-var arrayOfSquareColors = [];
+var squarePoints = []
+var squareColors = []
+var arrayOfSquarePoints = []
+var arrayOfSquareColors = []
 
 let polygonPoints = []
 let polygonColors = []
@@ -69,11 +69,11 @@ const moveLinePoints = () => {
 }
 
 const hexToRgb = (hex) => {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
   return {
-    r: parseInt(result[1], 16)/255,
-    g: parseInt(result[2], 16)/255,
-    b: parseInt(result[3], 16)/255
+    r: parseInt(result[1], 16) / 255,
+    g: parseInt(result[2], 16) / 255,
+    b: parseInt(result[3], 16) / 255,
   }
 }
 
@@ -94,10 +94,9 @@ window.onload = function main() {
     console.log(`Selected shape: ${shapeIdx}`)
   })
 
-
   let colorSelector = document.getElementById('color-picker')
   colorSelector.addEventListener('change', (e) => {
-    let {r, g, b} = hexToRgb(e.target.value)
+    let { r, g, b } = hexToRgb(e.target.value)
     color = [r, g, b, 1.0, r, g, b, 1.0]
     // console.log(color)
   })
@@ -109,9 +108,16 @@ window.onload = function main() {
     console.log(`Selected size: ${size}`)
   })
 
-  let moveMode = document.getElementById('move-mode')
-  moveMode.addEventListener('change', (e) => {
+  let drawModeSelector = document.getElementById('draw-mode')
+  drawModeSelector.addEventListener('change', (e) => {
+    isMoveMode = !e.target.checked
+    console.log(`Move mode: ${isMoveMode}`)
+  })
+
+  let moveModeSelector = document.getElementById('move-mode')
+  moveModeSelector.addEventListener('change', (e) => {
     isMoveMode = e.target.checked
+    console.log(`Move mode: ${isMoveMode}`)
   })
 
   //Move object
@@ -127,13 +133,13 @@ window.onload = function main() {
       isMoved = true
     }
   })
-  canvas.addEventListener('mouseup', (e) => { 
+  canvas.addEventListener('mouseup', (e) => {
     if (isMoveMode && isMoved) {
       getCoordinate(e)
-      if (selectedMoveShapeIdx === 0) {  // TODO: Add other shapes
+      if (selectedMoveShapeIdx === 0) {
+        // TODO: Add other shapes
         moveLinePoints()
-      } else{
-
+      } else {
       }
       render()
     }
@@ -150,56 +156,58 @@ window.onload = function main() {
         console.log(`Line Points: ${linePoints}`)
         lineColors.push(color)
         console.log(`Line Colors: ${lineColors}`)
-      } else if(shapeIdx == 1) { //square
-        squarePoints.push(x + size);
-        squarePoints.push(y);
+      } else if (shapeIdx == 1) {
+        //square
+        squarePoints.push(x + size)
+        squarePoints.push(y)
         console.log(squarePoints)
 
-        squarePoints.push(x);
-        squarePoints.push(y);
+        squarePoints.push(x)
+        squarePoints.push(y)
         console.log(squarePoints)
 
-        squarePoints.push(x + size);
-        squarePoints.push(y - size);
+        squarePoints.push(x + size)
+        squarePoints.push(y - size)
         console.log(squarePoints)
 
-        squarePoints.push(x);
-        squarePoints.push(y - size);
+        squarePoints.push(x)
+        squarePoints.push(y - size)
         console.log(squarePoints)
 
-        squareColors.push(color);
-        squareColors.push(color);
+        squareColors.push(color)
+        squareColors.push(color)
 
-        arrayOfSquarePoints.push(squarePoints);
-        arrayOfSquareColors.push(squareColors);
+        arrayOfSquarePoints.push(squarePoints)
+        arrayOfSquareColors.push(squareColors)
 
-        render();
-      } else if(shapeIdx == 2) { //rectangle
-        
-      } else if(shapeIdx == 3) { //polygon
+        render()
+      } else if (shapeIdx == 2) {
+        //rectangle
+      } else if (shapeIdx == 3) {
+        //polygon
         let numPoly = parseInt(document.getElementById('number-nodes').value)
         console.log(numPoly)
-        
+
         polygonPoints.push(x, y)
         polygonColors.push(color, color)
-        if (currNumPoly < numPoly  - 1) {  //not last node
-          currNumPoly+=1
-        } else { //last polygon node
+        if (currNumPoly < numPoly - 1) {
+          //not last node
+          currNumPoly += 1
+        } else {
+          //last polygon node
           arrPolygonPoints.push(polygonPoints)
           arrPolygonColors.push(polygonColors)
           arrNumPoly.push(numPoly)
           polygonPoints = []
           polygonColors = []
-          currNumPoly=0
+          currNumPoly = 0
           // console.log(arrPolygonPoints)
           // console.log(arrPolygonColors)
           //Save polygon and reset
         }
-
-      } else{
-        
+      } else {
       }
-      
+
       render()
     }
   })
@@ -244,31 +252,31 @@ function render() {
   // END: Draw line
 
   // START: Draw Square
-  var m = 0;
+  var m = 0
   for (var j = 0; j < arrayOfSquarePoints.length; j++) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquarePoints[j]));
-    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId);
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquareColors[j]));
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId)
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquarePoints[j]))
+    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId)
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquareColors[j]))
     if (arrayOfSquarePoints[j].length != 0) {
       // for (var i = 0; i < arrayOfSquarePoints[j].length / 4 - 1; i++) {
       //   gl.drawArrays(gl.LINE_LOOP, 4 * i, 4);
       // }
-      gl.drawArrays(gl.TRIANGLES, m, 4);
-      gl.drawArrays(gl.TRIANGLES, m + 1, 4);
-      m = m + 4;
+      gl.drawArrays(gl.TRIANGLES, m, 4)
+      gl.drawArrays(gl.TRIANGLES, m + 1, 4)
+      m = m + 4
     }
   }
   // END: Draw line
 
-
   // START: Draw Polygon
-  for (let i = 0; i < arrPolygonPoints.length; i++) { //Draw each polygon
-    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrPolygonPoints[i]));
+  for (let i = 0; i < arrPolygonPoints.length; i++) {
+    //Draw each polygon
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId)
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrPolygonPoints[i]))
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId);
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrPolygonColors[i]));
+    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId)
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrPolygonColors[i]))
     if (arrPolygonPoints[i].length != 0) {
       gl.drawArrays(gl.LINE_LOOP, 0, arrNumPoly[i])
     }
