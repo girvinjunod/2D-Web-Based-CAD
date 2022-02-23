@@ -5,13 +5,14 @@ let bufferId = gl.createBuffer() // point/vertex buffer
 let cBufferId = gl.createBuffer() // color buffer
 
 let x, y
-let shapeIdx = 0 // selected shape; 0: line
+let shapeIdx = 0 // selected shape; 0: line, 1: square, 2: rectangle, 3: polygon
 let size = 0.5 // selected size
 let color = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0] // selected color
 let isMoveMode = false // move mode
 let isMoved = false // prevent click event from firing when moving
 let selectedMovePointIdx = -1 // closest point to be moved
-let selectedMoveShapeIdx = -1 // closest shape to be moved; 0: line
+let selectedMoveShapeIdx = -1 // closest shape to be moved
+let selectedMovePolygonIdx = -1 // closest polygon to be moved
 
 let linePoints = []
 let lineColors = []
@@ -29,7 +30,7 @@ let arrPolygonColors = []
 let arrNumPoly = []
 
 const MAX_NUM_VERTICES = 20000
-const CLOSEST_POINT_THRESHOLD = 0.01
+const CLOSEST_POINT_THRESHOLD = 0.02
 
 const resizeCanvas = (gl) => {
   gl.canvas.width = (9 / 12) * window.innerWidth
@@ -46,26 +47,54 @@ const getClosestPointFrom = (x, y) => {
   console.log(`Get Closest Point From: ${x}, ${y}`)
 
   let closestDistance = Infinity
-  for (let i = 0; i < linePoints.length; i += 2) {
-    currLinePoint = [linePoints[i], linePoints[i + 1]]
-    dx = Math.abs(currLinePoint[0] - x)
-    dy = Math.abs(currLinePoint[1] - y)
-    if (
-      dx < CLOSEST_POINT_THRESHOLD &&
-      dy < CLOSEST_POINT_THRESHOLD &&
-      dx + dy < closestDistance
-    ) {
-      closestDistance = dx + dy
-      selectedMovePointIdx = i
-      selectedMoveShapeIdx = 0
-      console.log(`Selected move point idx: ${selectedMovePointIdx}`)
+  let nonPolygonPoints = [linePoints, squarePoints]
+
+  for (let i = 0; i < nonPolygonPoints.length; i++) {
+    for (let j = 0; j < nonPolygonPoints[i].length; j += 2) {
+      currPoint = [nonPolygonPoints[i][j], nonPolygonPoints[i][j + 1]]
+      dx = Math.abs(currPoint[0] - x)
+      dy = Math.abs(currPoint[1] - y)
+      if (isCandidatePoint(dx, dy, closestDistance)) {
+        closestDistance = dx + dy
+        selectedMovePointIdx = j
+        selectedMoveShapeIdx = i
+        console.log(`Selected move point idx: ${selectedMovePointIdx}`)
+      }
+    }
+  }
+
+  for (let i = 0; i < arrPolygonPoints.length; i++) {
+    for (let j = 0; j < arrPolygonPoints[i].length; j += 2) {
+      currPoint = [arrPolygonPoints[i][j], arrPolygonPoints[i][j + 1]]
+      dx = Math.abs(currPoint[0] - x)
+      dy = Math.abs(currPoint[1] - y)
+      if (isCandidatePoint(dx, dy, closestDistance)) {
+        closestDistance = dx + dy
+        selectedMovePointIdx = j
+        selectedMovePolygonIdx = i
+        selectedMoveShapeIdx = 3
+        console.log(`Selected move point idx: ${selectedMovePointIdx}`)
+      }
     }
   }
 }
 
-const moveLinePoints = () => {
-  linePoints[selectedMovePointIdx] = x
-  linePoints[selectedMovePointIdx + 1] = y
+const isCandidatePoint = (dx, dy, closestDistance) => {
+  return (
+    dx < CLOSEST_POINT_THRESHOLD &&
+    dy < CLOSEST_POINT_THRESHOLD &&
+    dx + dy < closestDistance
+  )
+}
+
+const moveNonPolygonPoints = (nonPolygonPoints) => {
+  nonPolygonPoints[selectedMovePointIdx] = x
+  nonPolygonPoints[selectedMovePointIdx + 1] = y
+}
+
+const movePolygonPoints = () => {
+  arrPolygonPoints[selectedMovePolygonIdx][selectedMovePointIdx] = x
+  arrPolygonPoints[selectedMovePolygonIdx][selectedMovePointIdx + 1] = y
 }
 
 const hexToRgb = (hex) => {
@@ -98,7 +127,6 @@ window.onload = function main() {
   colorSelector.addEventListener('change', (e) => {
     let { r, g, b } = hexToRgb(e.target.value)
     color = [r, g, b, 1.0, r, g, b, 1.0]
-    // console.log(color)
   })
 
   let sizeSelector = document.getElementById('size-selector')
@@ -128,19 +156,20 @@ window.onload = function main() {
       getClosestPointFrom(x, y)
     }
   })
+
   canvas.addEventListener('mousemove', (e) => {
     if (isMoveMode) {
       isMoved = true
     }
   })
+
   canvas.addEventListener('mouseup', (e) => {
     if (isMoveMode && isMoved) {
       getCoordinate(e)
-      if (selectedMoveShapeIdx === 0) {
-        // TODO: Add other shapes
-        moveLinePoints()
-      } else {
-      }
+      if (selectedMoveShapeIdx === 0) moveNonPolygonPoints(linePoints)
+      if (selectedMoveShapeIdx === 1) moveNonPolygonPoints(squarePoints)
+      // if (selectedMoveShapeIdx === 2) moveNonPolygonPoints() // TODO
+      if (selectedMoveShapeIdx === 3) movePolygonPoints()
       render()
     }
   })
@@ -267,7 +296,7 @@ function render() {
       m = m + 4
     }
   }
-  // END: Draw line
+  // END: Draw Square
 
   // START: Draw Polygon
   for (let i = 0; i < arrPolygonPoints.length; i++) {
