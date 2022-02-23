@@ -55,7 +55,7 @@ const getClosestPointFrom = (x, y) => {
   console.log(`Get Closest Point From: ${x}, ${y}`)
 
   let closestDistance = Infinity
-  let nonPolygonPoints = [linePoints, squarePoints]
+  let nonPolygonPoints = [linePoints, squarePoints, rectanglePoints]
 
   for (let i = 0; i < nonPolygonPoints.length; i++) {
     for (let j = 0; j < nonPolygonPoints[i].length; j += 2) {
@@ -67,6 +67,7 @@ const getClosestPointFrom = (x, y) => {
         selectedMovePointIdx = j
         selectedMoveShapeIdx = i
         console.log(`Selected move point idx: ${selectedMovePointIdx}`)
+        console.log(`Selected Shape idx: ${selectedMoveShapeIdx}`)
       }
     }
   }
@@ -93,6 +94,33 @@ const isCandidatePoint = (dx, dy, closestDistance) => {
     dy < CLOSEST_POINT_THRESHOLD &&
     dx + dy < closestDistance
   )
+}
+
+const moveRectangle = (nonPolygonPoints) => {
+  if(selectedMovePointIdx == 0) {
+    nonPolygonPoints[selectedMovePointIdx] = x
+    nonPolygonPoints[selectedMovePointIdx+1] = y
+    nonPolygonPoints[selectedMovePointIdx + 3] = nonPolygonPoints[selectedMovePointIdx+1]
+    nonPolygonPoints[selectedMovePointIdx + 6] = nonPolygonPoints[selectedMovePointIdx]
+  }
+  else if(selectedMovePointIdx == 2) {
+    nonPolygonPoints[selectedMovePointIdx] = x
+    nonPolygonPoints[selectedMovePointIdx+1] = y
+    nonPolygonPoints[selectedMovePointIdx + 2] = nonPolygonPoints[selectedMovePointIdx]
+    nonPolygonPoints[selectedMovePointIdx - 1] = nonPolygonPoints[selectedMovePointIdx+1]
+  }
+  else if(selectedMovePointIdx == 4) {
+    nonPolygonPoints[selectedMovePointIdx] = x
+    nonPolygonPoints[selectedMovePointIdx+1] = y
+    nonPolygonPoints[selectedMovePointIdx + 3] = nonPolygonPoints[selectedMovePointIdx+1]
+    nonPolygonPoints[selectedMovePointIdx - 2] = nonPolygonPoints[selectedMovePointIdx]
+  }
+  else if(selectedMovePointIdx == 6) {
+    nonPolygonPoints[selectedMovePointIdx] = x
+    nonPolygonPoints[selectedMovePointIdx+1] = y
+    nonPolygonPoints[selectedMovePointIdx - 6] = nonPolygonPoints[selectedMovePointIdx]
+    nonPolygonPoints[selectedMovePointIdx - 1] = nonPolygonPoints[selectedMovePointIdx+1]
+  }
 }
 
 const moveNonPolygonPoints = (nonPolygonPoints) => {
@@ -170,7 +198,7 @@ window.onload = function main() {
       getCoordinate(e)
       getClosestPointFrom(x, y)
     }
-    if (shapeIdx == 1 || shapeIdx == 2) {
+    if (shapeIdx == 1 || shapeIdx == 2 && !isMoveMode) {
       arrayFirst = []
       getCoordinate(e)
       arrayFirst.push(x)
@@ -182,7 +210,7 @@ window.onload = function main() {
     if (isMoveMode) {
       isMoved = true
     }
-    if(mouseClick){
+    if(mouseClick && !isMoveMode){
       getCoordinate(e)
       if (shapeIdx == 1) {
         var temp = Math.max((arrayFirst[0] - x), (arrayFirst[1] - y))
@@ -249,12 +277,12 @@ window.onload = function main() {
     if (isMoveMode && isMoved) {
       getCoordinate(e)
       if (selectedMoveShapeIdx === 0) moveNonPolygonPoints(linePoints)
-      if (selectedMoveShapeIdx === 1) moveNonPolygonPoints(squarePoints)
-      // if (selectedMoveShapeIdx === 2) moveNonPolygonPoints() // TODO
+      if (selectedMoveShapeIdx === 1) moveSquare(squarePoints)
+      if (selectedMoveShapeIdx === 2) moveRectangle(rectanglePoints)
       if (selectedMoveShapeIdx === 3) movePolygonPoints()
       render()
     }
-    if (shapeIdx == 1) {
+    if (shapeIdx == 1 && !isMoveMode) {
       getCoordinate(e)
       var temp = Math.max((arrayFirst[0] - x), (arrayFirst[1] - y))
 
@@ -278,7 +306,7 @@ window.onload = function main() {
     
       render()
     }
-    else if (shapeIdx == 2) {
+    else if (shapeIdx == 2 && !isMoveMode) {
       var temp_x = (arrayFirst[0] - x) * -1
       var temp_y = arrayFirst[1] - y
       rectanglePoints.push(arrayFirst[0]);
@@ -314,9 +342,6 @@ window.onload = function main() {
         console.log(`Line Points: ${linePoints}`)
         lineColors.push(color)
         console.log(`Line Colors: ${lineColors}`)
-      } 
-      else if (shapeIdx == 2) {
-        //rectangle
       } else if (shapeIdx == 3) {
         //polygon
         let numPoly = parseInt(document.getElementById('number-nodes').value)
@@ -339,7 +364,6 @@ window.onload = function main() {
           // console.log(arrPolygonColors)
           //Save polygon and reset
         }
-      } else {
       }
 
       render()
