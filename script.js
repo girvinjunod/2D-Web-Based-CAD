@@ -123,6 +123,91 @@ const moveRectangle = (nonPolygonPoints) => {
   }
 }
 
+function Maximum2Value(A,B) {
+  if (Math.abs(A) > Math.abs(B)) {
+    return A
+  }
+  else {
+    return B
+  }
+}
+
+const moveSquare = (nonPolygonPoints) => {
+
+  if(selectedMovePointIdx == 0) {
+    var temp_x = nonPolygonPoints[selectedMovePointIdx] - x
+    var temp_y = y - nonPolygonPoints[selectedMovePointIdx+1]
+    var max2value = Maximum2Value(temp_x, temp_y)
+
+    var indentifier = 1
+    if (max2value < 0) {
+      indentifier = -1
+    }
+    var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
+
+    nonPolygonPoints[selectedMovePointIdx] = nonPolygonPoints[selectedMovePointIdx] - distance
+    nonPolygonPoints[selectedMovePointIdx+1] = nonPolygonPoints[selectedMovePointIdx+1] + distance
+    nonPolygonPoints[selectedMovePointIdx + 3] = nonPolygonPoints[selectedMovePointIdx+1]
+    nonPolygonPoints[selectedMovePointIdx + 6] = nonPolygonPoints[selectedMovePointIdx]
+  }
+  else if(selectedMovePointIdx == 2) {
+    var temp_x = x - nonPolygonPoints[selectedMovePointIdx]
+    var temp_y = y - nonPolygonPoints[selectedMovePointIdx+1]
+    console.log('ini temp x', temp_x)
+    console.log('ini temp y', temp_y)
+    var max2value = Maximum2Value(temp_x, temp_y)
+    console.log("max",max2value)
+
+    var indentifier = 1
+    if (max2value < 0) {
+      indentifier = -1
+    }
+    var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
+    console.log("distance", distance)
+    nonPolygonPoints[selectedMovePointIdx] = nonPolygonPoints[selectedMovePointIdx] + distance
+    nonPolygonPoints[selectedMovePointIdx+1] = nonPolygonPoints[selectedMovePointIdx+1] + distance
+    nonPolygonPoints[selectedMovePointIdx + 2] = nonPolygonPoints[selectedMovePointIdx]
+    nonPolygonPoints[selectedMovePointIdx - 1] = nonPolygonPoints[selectedMovePointIdx+1]
+  }
+  else if(selectedMovePointIdx == 4) {
+    var temp_x = x - nonPolygonPoints[selectedMovePointIdx]
+    var temp_y =  nonPolygonPoints[selectedMovePointIdx+1] - y
+    console.log('ini temp x', temp_x)
+    console.log('ini temp y', temp_y)
+    var max2value = Maximum2Value(temp_x, temp_y)
+    console.log("max",max2value)
+
+    var indentifier = 1
+    if (max2value < 0) {
+      indentifier = -1
+    }
+    var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
+    console.log("distance", distance)
+    nonPolygonPoints[selectedMovePointIdx] = nonPolygonPoints[selectedMovePointIdx] + distance
+    nonPolygonPoints[selectedMovePointIdx+1] = nonPolygonPoints[selectedMovePointIdx+1] - distance
+    nonPolygonPoints[selectedMovePointIdx + 3] = nonPolygonPoints[selectedMovePointIdx+1]
+    nonPolygonPoints[selectedMovePointIdx - 2] = nonPolygonPoints[selectedMovePointIdx]
+  }
+  else if(selectedMovePointIdx == 6) {
+    var temp_x = nonPolygonPoints[selectedMovePointIdx] - x
+    var temp_y =  nonPolygonPoints[selectedMovePointIdx+1] - y
+    console.log('ini temp x', temp_x)
+    console.log('ini temp y', temp_y)
+    var max2value = Maximum2Value(temp_x, temp_y)
+    console.log("max",max2value)
+
+    var indentifier = 1
+    if (max2value < 0) {
+      indentifier = -1
+    }
+    var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
+    nonPolygonPoints[selectedMovePointIdx] = nonPolygonPoints[selectedMovePointIdx] - distance
+    nonPolygonPoints[selectedMovePointIdx+1] = nonPolygonPoints[selectedMovePointIdx+1] - distance
+    nonPolygonPoints[selectedMovePointIdx - 6] = nonPolygonPoints[selectedMovePointIdx]
+    nonPolygonPoints[selectedMovePointIdx - 1] = nonPolygonPoints[selectedMovePointIdx+1]
+  }
+}
+
 const moveNonPolygonPoints = (nonPolygonPoints) => {
   nonPolygonPoints[selectedMovePointIdx] = x
   nonPolygonPoints[selectedMovePointIdx + 1] = y
