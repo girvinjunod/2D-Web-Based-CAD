@@ -72,6 +72,36 @@ const getClosestPointFrom = (x, y) => {
     }
   }
 
+  for (let i = 0; i < arrayOfSquarePoints.length; i++) {
+    for (let j = 0; j < arrayOfSquarePoints[i].length; j += 2) {
+      currPoint = [arrayOfSquarePoints[i][j], arrayOfSquarePoints[i][j + 1]]
+      dx = Math.abs(currPoint[0] - x)
+      dy = Math.abs(currPoint[1] - y)
+      if (isCandidatePoint(dx, dy, closestDistance)) {
+        closestDistance = dx + dy
+        selectedMovePointIdx = j
+        selectedMoveSquareIdx = i
+        selectedMoveShapeIdx = 1
+        console.log(`Selected move point idx: ${selectedMovePointIdx}`)
+      }
+    }
+  }
+
+  for (let i = 0; i < arrayOfRectanglePoints.length; i++) {
+    for (let j = 0; j < arrayOfRectanglePoints[i].length; j += 2) {
+      currPoint = [arrayOfRectanglePoints[i][j], arrayOfRectanglePoints[i][j + 1]]
+      dx = Math.abs(currPoint[0] - x)
+      dy = Math.abs(currPoint[1] - y)
+      if (isCandidatePoint(dx, dy, closestDistance)) {
+        closestDistance = dx + dy
+        selectedMovePointIdx = j
+        selectedMoveRectangleIdx = i
+        selectedMoveShapeIdx = 2
+        console.log(`Selected move point idx: ${selectedMovePointIdx}`)
+      }
+    }
+  }
+
   for (let i = 0; i < arrPolygonPoints.length; i++) {
     for (let j = 0; j < arrPolygonPoints[i].length; j += 2) {
       currPoint = [arrPolygonPoints[i][j], arrPolygonPoints[i][j + 1]]
@@ -86,6 +116,7 @@ const getClosestPointFrom = (x, y) => {
       }
     }
   }
+  
 }
 
 const isCandidatePoint = (dx, dy, closestDistance) => {
@@ -96,30 +127,30 @@ const isCandidatePoint = (dx, dy, closestDistance) => {
   )
 }
 
-const moveRectangle = (nonPolygonPoints) => {
+const moveRectangle = () => {
   if(selectedMovePointIdx == 0) {
-    nonPolygonPoints[selectedMovePointIdx] = x
-    nonPolygonPoints[selectedMovePointIdx+1] = y
-    nonPolygonPoints[selectedMovePointIdx + 3] = nonPolygonPoints[selectedMovePointIdx+1]
-    nonPolygonPoints[selectedMovePointIdx + 6] = nonPolygonPoints[selectedMovePointIdx]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx] = x
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1] = y
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 3] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 6] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
   }
   else if(selectedMovePointIdx == 2) {
-    nonPolygonPoints[selectedMovePointIdx] = x
-    nonPolygonPoints[selectedMovePointIdx+1] = y
-    nonPolygonPoints[selectedMovePointIdx + 2] = nonPolygonPoints[selectedMovePointIdx]
-    nonPolygonPoints[selectedMovePointIdx - 1] = nonPolygonPoints[selectedMovePointIdx+1]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx] = x
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1] = y
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 2] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 1] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1]
   }
   else if(selectedMovePointIdx == 4) {
-    nonPolygonPoints[selectedMovePointIdx] = x
-    nonPolygonPoints[selectedMovePointIdx+1] = y
-    nonPolygonPoints[selectedMovePointIdx + 3] = nonPolygonPoints[selectedMovePointIdx+1]
-    nonPolygonPoints[selectedMovePointIdx - 2] = nonPolygonPoints[selectedMovePointIdx]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx] = x
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1] = y
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 3] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 2] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
   }
   else if(selectedMovePointIdx == 6) {
-    nonPolygonPoints[selectedMovePointIdx] = x
-    nonPolygonPoints[selectedMovePointIdx+1] = y
-    nonPolygonPoints[selectedMovePointIdx - 6] = nonPolygonPoints[selectedMovePointIdx]
-    nonPolygonPoints[selectedMovePointIdx - 1] = nonPolygonPoints[selectedMovePointIdx+1]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx] = x
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1] = y
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 6] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 1] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1]
   }
 }
 
@@ -132,11 +163,11 @@ function Maximum2Value(A,B) {
   }
 }
 
-const moveSquare = (nonPolygonPoints) => {
+const moveSquare = () => {
 
   if(selectedMovePointIdx == 0) {
-    var temp_x = nonPolygonPoints[selectedMovePointIdx] - x
-    var temp_y = y - nonPolygonPoints[selectedMovePointIdx+1]
+    var temp_x = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] - x
+    var temp_y = y - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
     var max2value = Maximum2Value(temp_x, temp_y)
 
     var indentifier = 1
@@ -145,14 +176,14 @@ const moveSquare = (nonPolygonPoints) => {
     }
     var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
 
-    nonPolygonPoints[selectedMovePointIdx] = nonPolygonPoints[selectedMovePointIdx] - distance
-    nonPolygonPoints[selectedMovePointIdx+1] = nonPolygonPoints[selectedMovePointIdx+1] + distance
-    nonPolygonPoints[selectedMovePointIdx + 3] = nonPolygonPoints[selectedMovePointIdx+1]
-    nonPolygonPoints[selectedMovePointIdx + 6] = nonPolygonPoints[selectedMovePointIdx]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] - distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] + distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 3] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 6] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
   }
   else if(selectedMovePointIdx == 2) {
-    var temp_x = x - nonPolygonPoints[selectedMovePointIdx]
-    var temp_y = y - nonPolygonPoints[selectedMovePointIdx+1]
+    var temp_x = x - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
+    var temp_y = y - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
     console.log('ini temp x', temp_x)
     console.log('ini temp y', temp_y)
     var max2value = Maximum2Value(temp_x, temp_y)
@@ -164,14 +195,14 @@ const moveSquare = (nonPolygonPoints) => {
     }
     var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
     console.log("distance", distance)
-    nonPolygonPoints[selectedMovePointIdx] = nonPolygonPoints[selectedMovePointIdx] + distance
-    nonPolygonPoints[selectedMovePointIdx+1] = nonPolygonPoints[selectedMovePointIdx+1] + distance
-    nonPolygonPoints[selectedMovePointIdx + 2] = nonPolygonPoints[selectedMovePointIdx]
-    nonPolygonPoints[selectedMovePointIdx - 1] = nonPolygonPoints[selectedMovePointIdx+1]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] + distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] + distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 2] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
   }
   else if(selectedMovePointIdx == 4) {
-    var temp_x = x - nonPolygonPoints[selectedMovePointIdx]
-    var temp_y =  nonPolygonPoints[selectedMovePointIdx+1] - y
+    var temp_x = x - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
+    var temp_y =  arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] - y
     console.log('ini temp x', temp_x)
     console.log('ini temp y', temp_y)
     var max2value = Maximum2Value(temp_x, temp_y)
@@ -183,14 +214,14 @@ const moveSquare = (nonPolygonPoints) => {
     }
     var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
     console.log("distance", distance)
-    nonPolygonPoints[selectedMovePointIdx] = nonPolygonPoints[selectedMovePointIdx] + distance
-    nonPolygonPoints[selectedMovePointIdx+1] = nonPolygonPoints[selectedMovePointIdx+1] - distance
-    nonPolygonPoints[selectedMovePointIdx + 3] = nonPolygonPoints[selectedMovePointIdx+1]
-    nonPolygonPoints[selectedMovePointIdx - 2] = nonPolygonPoints[selectedMovePointIdx]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] + distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] - distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 3] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 2] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
   }
   else if(selectedMovePointIdx == 6) {
-    var temp_x = nonPolygonPoints[selectedMovePointIdx] - x
-    var temp_y =  nonPolygonPoints[selectedMovePointIdx+1] - y
+    var temp_x = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] - x
+    var temp_y =  arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] - y
     console.log('ini temp x', temp_x)
     console.log('ini temp y', temp_y)
     var max2value = Maximum2Value(temp_x, temp_y)
@@ -201,10 +232,10 @@ const moveSquare = (nonPolygonPoints) => {
       indentifier = -1
     }
     var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
-    nonPolygonPoints[selectedMovePointIdx] = nonPolygonPoints[selectedMovePointIdx] - distance
-    nonPolygonPoints[selectedMovePointIdx+1] = nonPolygonPoints[selectedMovePointIdx+1] - distance
-    nonPolygonPoints[selectedMovePointIdx - 6] = nonPolygonPoints[selectedMovePointIdx]
-    nonPolygonPoints[selectedMovePointIdx - 1] = nonPolygonPoints[selectedMovePointIdx+1]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] - distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] - distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 6] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
   }
 }
 
@@ -495,6 +526,7 @@ function render() {
   // END: Draw line
 
   // START: Draw Square
+  squarePoints = []
   for (var j = 0; j < arrayOfSquarePoints.length; j++) {
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquarePoints[j]));
@@ -509,6 +541,7 @@ function render() {
   // END: Draw Square
 
   // START: Draw Rectangle
+  rectanglePoints = []
   for (var j = 0; j < arrayOfRectanglePoints.length; j++) {
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfRectanglePoints[j]));
