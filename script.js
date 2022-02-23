@@ -273,7 +273,27 @@ window.onload = function main() {
       render()
     }
     else if (shapeIdx == 2) {
+      var temp_x = (arrayFirst[0] - x) * -1
+      var temp_y = arrayFirst[1] - y
+      rectanglePoints.push(arrayFirst[0]);
+      rectanglePoints.push(arrayFirst[1]);
 
+      rectanglePoints.push(arrayFirst[0] + temp_x);
+      rectanglePoints.push(arrayFirst[1]);
+
+      rectanglePoints.push(arrayFirst[0] + temp_x);
+      rectanglePoints.push(arrayFirst[1] - temp_y);
+
+      rectanglePoints.push(arrayFirst[0]);
+      rectanglePoints.push(arrayFirst[1] - temp_y);
+
+      rectangleColors.push(color);
+      rectangleColors.push(color);
+
+      arrayOfRectanglePoints.push(rectanglePoints);
+      arrayOfRectangleColors.push(rectangleColors);
+    
+      render()
     }
   })
 
