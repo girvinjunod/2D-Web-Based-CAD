@@ -531,7 +531,8 @@ function render() {
     gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId)
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrPolygonColors[i]))
     if (arrPolygonPoints[i].length != 0) {
-      gl.drawArrays(gl.LINE_LOOP, 0, arrNumPoly[i])
+      // gl.drawArrays(gl.LINE_LOOP, 0, arrNumPoly[i])
+      gl.drawArrays(gl.TRIANGLE_FAN, 0, arrNumPoly[i])
     }
   }
   // END: Draw Polygon
