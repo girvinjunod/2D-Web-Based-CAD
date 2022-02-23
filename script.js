@@ -159,6 +159,9 @@ window.onload = function main() {
   let saveButton = document.getElementById("save");
   saveButton.addEventListener("click", saveFile);
 
+  let loadButton = document.getElementById("load");
+  loadButton.addEventListener("change", loadFile);
+
   //Move object
   canvas.addEventListener('mousedown', (e) => {
     mouseClick = true
@@ -519,4 +522,40 @@ const downloadFile = (content, filename = "File_Grafkom.json", contentType = "js
   a.download = filename;
   a.click();
   URL.revokeObjectURL(a.href);
+};
+
+// Load File
+const loadFile = (e) => {
+  const file = e.target.files[0];
+  var reader = new FileReader();
+  reader.addEventListener("load", function (e) {
+    let data = e.target.result;
+    data = JSON.parse(data);
+    
+    // Data Line
+    linePoints = data.linePoints,
+    lineColors = data.lineColors,
+
+    // Data Square
+    squareColors = data.squareColors ,
+    squarePoints = data.squarePoints,
+    arrayOfSquareColors = data.arrayOfSquareColors,
+    arrayOfSquarePoints = data.arrayOfSquarePoints,
+
+    // Data Rectangle
+    rectanglePoints = data.rectanglePoints,
+    rectangleColors = data.rectangleColors,
+    arrayOfRectanglePoints = data.arrayOfRectanglePoints,
+    arrayOfRectangleColors = data.arrayOfRectangleColors,
+
+    // Data Polygon
+    polygonPoints = data.polygonPoints,
+    polygonColors = data.polygonColors,
+    currNumPoly = data.currNumPoly,
+    arrPolygonPoints = data.arrPolygonPoints,
+    arrPolygonColors = data.arrPolygonColors,
+    arrNumPoly = data.arrNumPoly
+    render();
+  });
+  reader.readAsBinaryString(file);
 };
