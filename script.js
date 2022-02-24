@@ -9,7 +9,6 @@ let shapeIdx = 0 // selected shape; 0: line, 1: square, 2: rectangle, 3: polygon
 let color = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0] // selected color
 var mouseClick = false
 let isMoveMode = false // move mode
-let isMoved = false // prevent click event from firing when moving
 let selectedMoveShapeIdx = -1 // closest shape to be moved
 let selectedMovePolygonIdx = -1 // closest polygon to be moved
 
@@ -360,7 +359,6 @@ window.onload = function main() {
   canvas.addEventListener('mousedown', (e) => {
     mouseClick = true
     if (isMoveMode) {
-      isMoved = false
       getCoordinate(e)
       getClosestPointFrom(x, y)
     }
@@ -378,8 +376,13 @@ window.onload = function main() {
   })
 
   canvas.addEventListener('mousemove', (e) => {
-    if (isMoveMode) {
-      isMoved = true
+    if (mouseClick && isMoveMode) {
+      getCoordinate(e)
+      if (selectedMoveShapeIdx === 0) moveNonPolygonPoints(linePoints)
+      if (selectedMoveShapeIdx === 1) moveSquare(squarePoints)
+      if (selectedMoveShapeIdx === 2) moveRectangle(rectanglePoints)
+      if (selectedMoveShapeIdx === 3) movePolygonPoints()
+      render()
     }
     if (mouseClick && !isMoveMode) {
       getCoordinate(e)
@@ -456,14 +459,6 @@ window.onload = function main() {
 
   canvas.addEventListener('mouseup', (e) => {
     mouseClick = false
-    if (isMoveMode && isMoved) {
-      getCoordinate(e)
-      if (selectedMoveShapeIdx === 0) moveNonPolygonPoints(linePoints)
-      if (selectedMoveShapeIdx === 1) moveSquare(squarePoints)
-      if (selectedMoveShapeIdx === 2) moveRectangle(rectanglePoints)
-      if (selectedMoveShapeIdx === 3) movePolygonPoints()
-      render()
-    }
 
     if (!isMoveMode) {
       if (shapeIdx == 0) {
