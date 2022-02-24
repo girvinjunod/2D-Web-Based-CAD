@@ -351,7 +351,7 @@ window.onload = function main() {
       getCoordinate(e)
       getClosestPointFrom(x, y)
     }
-    if (shapeIdx == 1 || (shapeIdx == 2 && !isMoveMode)) {
+    if ((shapeIdx == 1 || shapeIdx == 2) && !isMoveMode) {
       arrayFirst = []
       getCoordinate(e)
       arrayFirst.push(x)
