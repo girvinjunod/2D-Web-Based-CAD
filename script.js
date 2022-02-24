@@ -51,20 +51,17 @@ const getClosestPointFrom = (x, y) => {
   console.log(`Get Closest Point From: ${x}, ${y}`)
 
   let closestDistance = Infinity
-  let nonPolygonPoints = [linePoints, squarePoints, rectanglePoints]
 
-  for (let i = 0; i < nonPolygonPoints.length; i++) {
-    for (let j = 0; j < nonPolygonPoints[i].length; j += 2) {
-      currPoint = [nonPolygonPoints[i][j], nonPolygonPoints[i][j + 1]]
-      dx = Math.abs(currPoint[0] - x)
-      dy = Math.abs(currPoint[1] - y)
-      if (isCandidatePoint(dx, dy, closestDistance)) {
-        closestDistance = dx + dy
-        selectedMovePointIdx = j
-        selectedMoveShapeIdx = i
-        console.log(`Selected move point idx: ${selectedMovePointIdx}`)
-        console.log(`Selected Shape idx: ${selectedMoveShapeIdx}`)
-      }
+  for (let i = 0; i < linePoints.length; i += 2) {
+    currPoint = [linePoints[i], linePoints[i + 1]]
+    dx = Math.abs(currPoint[0] - x)
+    dy = Math.abs(currPoint[1] - y)
+    if (isCandidatePoint(dx, dy, closestDistance)) {
+      closestDistance = dx + dy
+      selectedMovePointIdx = i
+      selectedMoveShapeIdx = 0
+      console.log(`Selected move point idx: ${selectedMovePointIdx}`)
+      console.log(`Selected Shape idx: ${selectedMoveShapeIdx}`)
     }
   }
 
