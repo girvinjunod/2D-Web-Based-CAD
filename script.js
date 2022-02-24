@@ -465,65 +465,65 @@ window.onload = function main() {
       render()
     }
 
-    if (shapeIdx == 0) {
-      getCoordinate(e)
-      let n = linePoints.length
-      if (e.shiftKey) {
-        linePoints[n - 2] = x
-      } else if (e.ctrlKey || e.metaKey) {
-        linePoints[n - 1] = y
-      } else {
-        linePoints[n - 2] = x
-        linePoints[n - 1] = y
+    if (!isMoveMode) {
+      if (shapeIdx == 0) {
+        getCoordinate(e)
+        let n = linePoints.length
+        if (e.shiftKey) {
+          linePoints[n - 2] = x
+        } else if (e.ctrlKey || e.metaKey) {
+          linePoints[n - 1] = y
+        } else {
+          linePoints[n - 2] = x
+          linePoints[n - 1] = y
+        }
+        render()
+      } else if (shapeIdx == 1) {
+        getCoordinate(e)
+        var temp = Math.max(arrayFirst[0] - x, arrayFirst[1] - y)
+
+        squarePoints.push(arrayFirst[0])
+        squarePoints.push(arrayFirst[1])
+
+        squarePoints.push(arrayFirst[0] + temp)
+        squarePoints.push(arrayFirst[1])
+
+        squarePoints.push(arrayFirst[0] + temp)
+        squarePoints.push(arrayFirst[1] - temp)
+
+        squarePoints.push(arrayFirst[0])
+        squarePoints.push(arrayFirst[1] - temp)
+
+        squareColors.push(color)
+        squareColors.push(color)
+
+        arrayOfSquarePoints.push(squarePoints)
+        arrayOfSquareColors.push(squareColors)
+
+        render()
+      } else if (shapeIdx == 2) {
+        var temp_x = (arrayFirst[0] - x) * -1
+        var temp_y = arrayFirst[1] - y
+        rectanglePoints.push(arrayFirst[0])
+        rectanglePoints.push(arrayFirst[1])
+
+        rectanglePoints.push(arrayFirst[0] + temp_x)
+        rectanglePoints.push(arrayFirst[1])
+
+        rectanglePoints.push(arrayFirst[0] + temp_x)
+        rectanglePoints.push(arrayFirst[1] - temp_y)
+
+        rectanglePoints.push(arrayFirst[0])
+        rectanglePoints.push(arrayFirst[1] - temp_y)
+
+        rectangleColors.push(color)
+        rectangleColors.push(color)
+
+        arrayOfRectanglePoints.push(rectanglePoints)
+        arrayOfRectangleColors.push(rectangleColors)
+
+        render()
       }
-      render()
-    }
-
-    if (shapeIdx == 1 && !isMoveMode) {
-      getCoordinate(e)
-      var temp = Math.max(arrayFirst[0] - x, arrayFirst[1] - y)
-
-      squarePoints.push(arrayFirst[0])
-      squarePoints.push(arrayFirst[1])
-
-      squarePoints.push(arrayFirst[0] + temp)
-      squarePoints.push(arrayFirst[1])
-
-      squarePoints.push(arrayFirst[0] + temp)
-      squarePoints.push(arrayFirst[1] - temp)
-
-      squarePoints.push(arrayFirst[0])
-      squarePoints.push(arrayFirst[1] - temp)
-
-      squareColors.push(color)
-      squareColors.push(color)
-
-      arrayOfSquarePoints.push(squarePoints)
-      arrayOfSquareColors.push(squareColors)
-
-      render()
-    } else if (shapeIdx == 2 && !isMoveMode) {
-      var temp_x = (arrayFirst[0] - x) * -1
-      var temp_y = arrayFirst[1] - y
-      rectanglePoints.push(arrayFirst[0])
-      rectanglePoints.push(arrayFirst[1])
-
-      rectanglePoints.push(arrayFirst[0] + temp_x)
-      rectanglePoints.push(arrayFirst[1])
-
-      rectanglePoints.push(arrayFirst[0] + temp_x)
-      rectanglePoints.push(arrayFirst[1] - temp_y)
-
-      rectanglePoints.push(arrayFirst[0])
-      rectanglePoints.push(arrayFirst[1] - temp_y)
-
-      rectangleColors.push(color)
-      rectangleColors.push(color)
-
-      arrayOfRectanglePoints.push(rectanglePoints)
-      arrayOfRectangleColors.push(rectangleColors)
-
-      render()
     }
   })
 
