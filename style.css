@@ -95,7 +95,7 @@ body {
 #help-btn {
   margin-top: 50px;
   margin-bottom: 10px;
-  background-color: #0f88b0;
+  background-color: #cc320b;
   padding: 15px 30px;
   border-radius: 10px;
   transition: 0.3s;
@@ -113,6 +113,7 @@ body {
   transition: 0.3s;
   cursor: pointer;
   color: white;
+  border: 0;
 }
 
 #save:hover{
