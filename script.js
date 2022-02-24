@@ -10,7 +10,6 @@ let color = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0] // selected color
 var mouseClick = false
 let isMoveMode = false // move mode
 let isMoved = false // prevent click event from firing when moving
-let selectedMovePointIdx = -1 // closest point to be moved
 let selectedMoveShapeIdx = -1 // closest shape to be moved
 let selectedMovePolygonIdx = -1 // closest polygon to be moved
 
@@ -334,6 +333,28 @@ window.onload = function main() {
 
   let loadButton = document.getElementById('load')
   loadButton.addEventListener('change', loadFile)
+
+  let clearButton = document.getElementById('clear-btn')
+  clearButton.addEventListener('click', () => {
+    linePoints = []
+    lineColors = []
+    squarePoints = []
+    squareColors = []
+    arrayOfSquarePoints = []
+    arrayOfSquareColors = []
+    rectanglePoints = []
+    rectangleColors = []
+    arrayOfRectanglePoints = []
+    arrayOfRectangleColors = []
+    arrayFirst = []
+    polygonPoints = []
+    polygonColors = []
+    currNumPoly = 0
+    arrPolygonPoints = []
+    arrPolygonColors = []
+    arrNumPoly = []
+    render()
+  })
 
   //Move object
   canvas.addEventListener('mousedown', (e) => {

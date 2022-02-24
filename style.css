@@ -83,17 +83,40 @@ body {
 }
 
 #help-btn {
-  margin-top: 50px;
+  width: 130px;
+  text-align: center;
+  margin-top: 20px;
   margin-bottom: 10px;
-  background-color: #cc320b;
-  padding: 15px 30px;
+  background-color: #4bb543;
+  padding: 10px 0;
   border-radius: 10px;
   transition: 0.3s;
   cursor: pointer;
+  outline: 1.5px solid rgb(236, 236, 236);
 }
 
 #help-btn:hover {
-  background-color: #0e4580;
+  background-color: rgb(236, 236, 236);
+  outline: 1.5px solid #4bb543;
+  color: #4bb543;
+}
+
+#clear-btn {
+  width: 130px;
+  text-align: center;
+  margin-bottom: 10px;
+  background-color: #cc320b;
+  padding: 10px 0;
+  border-radius: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+  outline: 1.5px solid rgb(236, 236, 236);
+}
+
+#clear-btn:hover {
+  background-color: rgb(236, 236, 236);
+  outline: 1.5px solid #cc320b;
+  color: #cc320b;
 }
 
 #save {
