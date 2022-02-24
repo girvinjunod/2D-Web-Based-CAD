@@ -270,9 +270,9 @@ const moveSquare = () => {
   }
 }
 
-const moveNonPolygonPoints = (nonPolygonPoints) => {
-  nonPolygonPoints[selectedMovePointIdx] = x
-  nonPolygonPoints[selectedMovePointIdx + 1] = y
+const moveLines = () => {
+  linePoints[selectedMovePointIdx] = x
+  linePoints[selectedMovePointIdx + 1] = y
 }
 
 const movePolygonPoints = () => {
@@ -335,24 +335,7 @@ window.onload = function main() {
 
   let clearButton = document.getElementById('clear-btn')
   clearButton.addEventListener('click', () => {
-    linePoints = []
-    lineColors = []
-    squarePoints = []
-    squareColors = []
-    arrayOfSquarePoints = []
-    arrayOfSquareColors = []
-    rectanglePoints = []
-    rectangleColors = []
-    arrayOfRectanglePoints = []
-    arrayOfRectangleColors = []
-    arrayFirst = []
-    polygonPoints = []
-    polygonColors = []
-    currNumPoly = 0
-    arrPolygonPoints = []
-    arrPolygonColors = []
-    arrNumPoly = []
-    render()
+    location.reload()
   })
 
   //Move object
@@ -379,7 +362,7 @@ window.onload = function main() {
   canvas.addEventListener('mousemove', (e) => {
     if (mouseClick && isMoveMode) {
       getCoordinate(e)
-      if (selectedMoveShapeIdx === 0) moveNonPolygonPoints(linePoints)
+      if (selectedMoveShapeIdx === 0) moveLines()
       if (selectedMoveShapeIdx === 1) moveSquare(squarePoints)
       if (selectedMoveShapeIdx === 2) moveRectangle(rectanglePoints)
       if (selectedMoveShapeIdx === 3) movePolygonPoints()
@@ -546,8 +529,6 @@ window.onload = function main() {
           polygonPoints = []
           polygonColors = []
           currNumPoly = 0
-          // console.log(arrPolygonPoints)
-          // console.log(arrPolygonColors)
           //Save polygon and reset
         }
       }
