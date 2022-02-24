@@ -182,3 +182,7 @@ h3 {
   padding: 0;
   font-weight: normal;
 }
+
+ul {
+  padding-left: 20px;
+}
