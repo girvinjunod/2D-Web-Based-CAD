@@ -350,6 +350,7 @@ window.onload = function main() {
       arrayFirst.push(y)
 
       if (shapeIdx == 0) {
+        lineMoveMode = ''
         linePoints.push(x, y, x, y)
       }
     }
@@ -363,8 +364,14 @@ window.onload = function main() {
       getCoordinate(e)
       if (shapeIdx == 0) {
         let n = linePoints.length
-        linePoints[n - 2] = x
-        linePoints[n - 1] = y
+        if (e.shiftKey) {
+          linePoints[n - 2] = x
+        } else if (e.ctrlKey || e.metaKey) {
+          linePoints[n - 1] = y
+        } else {
+          linePoints[n - 2] = x
+          linePoints[n - 1] = y
+        }
         render()
       }
 
@@ -440,8 +447,14 @@ window.onload = function main() {
     if (shapeIdx == 0) {
       getCoordinate(e)
       let n = linePoints.length
-      linePoints[n - 2] = x
-      linePoints[n - 1] = y
+      if (e.shiftKey) {
+        linePoints[n - 2] = x
+      } else if (e.ctrlKey || e.metaKey) {
+        linePoints[n - 1] = y
+      } else {
+        linePoints[n - 2] = x
+        linePoints[n - 1] = y
+      }
       render()
     }
 
