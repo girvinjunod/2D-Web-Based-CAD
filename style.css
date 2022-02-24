@@ -46,16 +46,6 @@ body {
   outline: none;
 }
 
-.options-width {
-  display: flex;
-  flex-direction: column;
-  margin-top: 25px;
-}
-
-.size-width {
-  margin-top: 20px;
-}
-
 .options-color,
 .options-number-nodes {
   display: flex;

@@ -6,7 +6,6 @@ let cBufferId = gl.createBuffer() // color buffer
 
 let x, y
 let shapeIdx = 0 // selected shape; 0: line, 1: square, 2: rectangle, 3: polygon
-let size = 0.5 // selected size
 let color = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0] // selected color
 var mouseClick = false
 let isMoveMode = false // move mode
@@ -318,13 +317,6 @@ window.onload = function main() {
     color = [r, g, b, 1.0, r, g, b, 1.0]
   })
 
-  let sizeSelector = document.getElementById('size-selector')
-  sizeSelector.addEventListener('change', (e) => {
-    // Scale size to 0.01-1
-    size = parseInt(e.target.value) / 100 || 0.01
-    console.log(`Selected size: ${size}`)
-  })
-
   let drawModeSelector = document.getElementById('draw-mode')
   drawModeSelector.addEventListener('change', (e) => {
     isMoveMode = !e.target.checked
@@ -505,14 +497,7 @@ window.onload = function main() {
   canvas.addEventListener('click', (e) => {
     if (!isMoveMode) {
       getCoordinate(e)
-      if (shapeIdx == 0) {
-        // console.log(`Current X: ${x}`)
-        // console.log(`Current Y: ${y}`)
-        // linePoints.push(x, y, x + size, y)
-        // console.log(`Line Points: ${linePoints}`)
-        // lineColors.push(color)
-        // console.log(`Line Colors: ${lineColors}`)
-      } else if (shapeIdx == 3) {
+      if (shapeIdx == 3) {
         //polygon
         let numPoly = parseInt(document.getElementById('number-nodes').value)
         console.log(numPoly)
