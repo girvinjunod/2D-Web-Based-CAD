@@ -303,12 +303,6 @@ window.onload = function main() {
   resizeCanvas(gl)
   window.addEventListener('resize', () => resizeCanvas(gl), false)
 
-  let shapeSelector = document.getElementById('shape-selector')
-  shapeSelector.addEventListener('change', (e) => {
-    shapeIdx = e.target.value
-    console.log(`Selected shape: ${shapeIdx}`)
-  })
-
   let colorSelector = document.getElementById('color-picker')
   colorSelector.addEventListener('change', (e) => {
     let { r, g, b } = hexToRgb(e.target.value)
@@ -325,6 +319,15 @@ window.onload = function main() {
   moveModeSelector.addEventListener('change', (e) => {
     isMoveMode = e.target.checked
     console.log(`Move mode: ${isMoveMode}`)
+  })
+
+  let shapeSelector = document.getElementById('shape-selector')
+  shapeSelector.addEventListener('change', (e) => {
+    shapeIdx = e.target.value
+    console.log(`Selected shape: ${shapeIdx}`)
+    isMoveMode = false
+    drawModeSelector.checked = true
+    moveModeSelector.checked = false
   })
 
   let saveButton = document.getElementById('save')
