@@ -29,7 +29,6 @@ var arrayOfRectanglePoints = []
 var arrayOfRectangleColors = []
 var arrayFirst = []
 
-
 let polygonPoints = []
 let polygonColors = []
 let currNumPoly = 0
@@ -89,7 +88,10 @@ const getClosestPointFrom = (x, y) => {
 
   for (let i = 0; i < arrayOfRectanglePoints.length; i++) {
     for (let j = 0; j < arrayOfRectanglePoints[i].length; j += 2) {
-      currPoint = [arrayOfRectanglePoints[i][j], arrayOfRectanglePoints[i][j + 1]]
+      currPoint = [
+        arrayOfRectanglePoints[i][j],
+        arrayOfRectanglePoints[i][j + 1],
+      ]
       dx = Math.abs(currPoint[0] - x)
       dy = Math.abs(currPoint[1] - y)
       if (isCandidatePoint(dx, dy, closestDistance)) {
@@ -116,7 +118,6 @@ const getClosestPointFrom = (x, y) => {
       }
     }
   }
-  
 }
 
 const isCandidatePoint = (dx, dy, closestDistance) => {
@@ -128,114 +129,150 @@ const isCandidatePoint = (dx, dy, closestDistance) => {
 }
 
 const moveRectangle = () => {
-  if(selectedMovePointIdx == 0) {
+  if (selectedMovePointIdx == 0) {
     arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx] = x
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1] = y
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 3] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1]
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 6] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
-  }
-  else if(selectedMovePointIdx == 2) {
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 1] =
+      y
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 3] =
+      arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 1]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 6] =
+      arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
+  } else if (selectedMovePointIdx == 2) {
     arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx] = x
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1] = y
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 2] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 1] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1]
-  }
-  else if(selectedMovePointIdx == 4) {
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 1] =
+      y
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 2] =
+      arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 1] =
+      arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 1]
+  } else if (selectedMovePointIdx == 4) {
     arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx] = x
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1] = y
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 3] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1]
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 2] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
-  }
-  else if(selectedMovePointIdx == 6) {
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 1] =
+      y
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 3] =
+      arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 1]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 2] =
+      arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
+  } else if (selectedMovePointIdx == 6) {
     arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx] = x
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1] = y
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 6] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
-    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 1] = arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx+1]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 1] =
+      y
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 6] =
+      arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx]
+    arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx - 1] =
+      arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx + 1]
   }
 }
 
-function Maximum2Value(A,B) {
+function Maximum2Value(A, B) {
   if (Math.abs(A) > Math.abs(B)) {
     return A
-  }
-  else {
+  } else {
     return B
   }
 }
 
 const moveSquare = () => {
-
-  if(selectedMovePointIdx == 0) {
-    var temp_x = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] - x
-    var temp_y = y - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
+  if (selectedMovePointIdx == 0) {
+    var temp_x =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] - x
+    var temp_y =
+      y - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1]
     var max2value = Maximum2Value(temp_x, temp_y)
 
     var indentifier = 1
     if (max2value < 0) {
       indentifier = -1
     }
-    var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
+    var distance = Math.sqrt(temp_x ** 2 + temp_y ** 2) * indentifier
 
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] - distance
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] + distance
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 3] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 6] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
-  }
-  else if(selectedMovePointIdx == 2) {
-    var temp_x = x - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
-    var temp_y = y - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] -
+      distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1] +
+      distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 3] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 6] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
+  } else if (selectedMovePointIdx == 2) {
+    var temp_x =
+      x - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
+    var temp_y =
+      y - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1]
     console.log('ini temp x', temp_x)
     console.log('ini temp y', temp_y)
     var max2value = Maximum2Value(temp_x, temp_y)
-    console.log("max",max2value)
+    console.log('max', max2value)
 
     var indentifier = 1
     if (max2value < 0) {
       indentifier = -1
     }
-    var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
-    console.log("distance", distance)
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] + distance
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] + distance
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 2] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
-  }
-  else if(selectedMovePointIdx == 4) {
-    var temp_x = x - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
-    var temp_y =  arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] - y
+    var distance = Math.sqrt(temp_x ** 2 + temp_y ** 2) * indentifier
+    console.log('distance', distance)
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] +
+      distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1] +
+      distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 2] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 1] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1]
+  } else if (selectedMovePointIdx == 4) {
+    var temp_x =
+      x - arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
+    var temp_y =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1] - y
     console.log('ini temp x', temp_x)
     console.log('ini temp y', temp_y)
     var max2value = Maximum2Value(temp_x, temp_y)
-    console.log("max",max2value)
+    console.log('max', max2value)
 
     var indentifier = 1
     if (max2value < 0) {
       indentifier = -1
     }
-    var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
-    console.log("distance", distance)
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] + distance
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] - distance
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 3] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 2] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
-  }
-  else if(selectedMovePointIdx == 6) {
-    var temp_x = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] - x
-    var temp_y =  arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] - y
+    var distance = Math.sqrt(temp_x ** 2 + temp_y ** 2) * indentifier
+    console.log('distance', distance)
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] +
+      distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1] -
+      distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 3] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 2] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
+  } else if (selectedMovePointIdx == 6) {
+    var temp_x =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] - x
+    var temp_y =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1] - y
     console.log('ini temp x', temp_x)
     console.log('ini temp y', temp_y)
     var max2value = Maximum2Value(temp_x, temp_y)
-    console.log("max",max2value)
+    console.log('max', max2value)
 
     var indentifier = 1
     if (max2value < 0) {
       indentifier = -1
     }
-    var distance = Math.sqrt(temp_x**2 + temp_y**2) * indentifier
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] - distance
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1] - distance
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 6] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
-    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 1] = arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx+1]
+    var distance = Math.sqrt(temp_x ** 2 + temp_y ** 2) * indentifier
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx] -
+      distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1] -
+      distance
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 6] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx]
+    arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx - 1] =
+      arrayOfSquarePoints[selectedMoveSquareIdx][selectedMovePointIdx + 1]
   }
 }
 
@@ -300,11 +337,11 @@ window.onload = function main() {
     console.log(`Move mode: ${isMoveMode}`)
   })
 
-  let saveButton = document.getElementById("save");
-  saveButton.addEventListener("click", saveFile);
+  let saveButton = document.getElementById('save')
+  saveButton.addEventListener('click', saveFile)
 
-  let loadButton = document.getElementById("load");
-  loadButton.addEventListener("change", loadFile);
+  let loadButton = document.getElementById('load')
+  loadButton.addEventListener('change', loadFile)
 
   //Move object
   canvas.addEventListener('mousedown', (e) => {
@@ -314,7 +351,7 @@ window.onload = function main() {
       getCoordinate(e)
       getClosestPointFrom(x, y)
     }
-    if (shapeIdx == 1 || shapeIdx == 2 && !isMoveMode) {
+    if (shapeIdx == 1 || (shapeIdx == 2 && !isMoveMode)) {
       arrayFirst = []
       getCoordinate(e)
       arrayFirst.push(x)
@@ -326,29 +363,29 @@ window.onload = function main() {
     if (isMoveMode) {
       isMoved = true
     }
-    if(mouseClick && !isMoveMode){
+    if (mouseClick && !isMoveMode) {
       getCoordinate(e)
       if (shapeIdx == 1) {
-        var temp = Math.max((arrayFirst[0] - x), (arrayFirst[1] - y))
-  
-        squarePoints.push(arrayFirst[0]);
-        squarePoints.push(arrayFirst[1]);
-  
-        squarePoints.push(arrayFirst[0] + temp);
-        squarePoints.push(arrayFirst[1]);
-  
-        squarePoints.push(arrayFirst[0] + temp);
-        squarePoints.push(arrayFirst[1] - temp);
-  
-        squarePoints.push(arrayFirst[0]);
-        squarePoints.push(arrayFirst[1] - temp);
-  
-        squareColors.push(color);
-        squareColors.push(color);
-  
-        arrayOfSquarePoints.push(squarePoints);
-        arrayOfSquareColors.push(squareColors);
-      
+        var temp = Math.max(arrayFirst[0] - x, arrayFirst[1] - y)
+
+        squarePoints.push(arrayFirst[0])
+        squarePoints.push(arrayFirst[1])
+
+        squarePoints.push(arrayFirst[0] + temp)
+        squarePoints.push(arrayFirst[1])
+
+        squarePoints.push(arrayFirst[0] + temp)
+        squarePoints.push(arrayFirst[1] - temp)
+
+        squarePoints.push(arrayFirst[0])
+        squarePoints.push(arrayFirst[1] - temp)
+
+        squareColors.push(color)
+        squareColors.push(color)
+
+        arrayOfSquarePoints.push(squarePoints)
+        arrayOfSquareColors.push(squareColors)
+
         render()
         squarePoints = []
         squareColors = []
@@ -359,33 +396,31 @@ window.onload = function main() {
       if (shapeIdx == 2) {
         var temp_x = (arrayFirst[0] - x) * -1
         var temp_y = arrayFirst[1] - y
-        rectanglePoints.push(arrayFirst[0]);
-        rectanglePoints.push(arrayFirst[1]);
-  
-        rectanglePoints.push(arrayFirst[0] + temp_x);
-        rectanglePoints.push(arrayFirst[1]);
-  
-        rectanglePoints.push(arrayFirst[0] + temp_x);
-        rectanglePoints.push(arrayFirst[1] - temp_y);
-  
-        rectanglePoints.push(arrayFirst[0]);
-        rectanglePoints.push(arrayFirst[1] - temp_y);
-  
-        rectangleColors.push(color);
-        rectangleColors.push(color);
-  
-        arrayOfRectanglePoints.push(rectanglePoints);
-        arrayOfRectangleColors.push(rectangleColors);
-      
+        rectanglePoints.push(arrayFirst[0])
+        rectanglePoints.push(arrayFirst[1])
+
+        rectanglePoints.push(arrayFirst[0] + temp_x)
+        rectanglePoints.push(arrayFirst[1])
+
+        rectanglePoints.push(arrayFirst[0] + temp_x)
+        rectanglePoints.push(arrayFirst[1] - temp_y)
+
+        rectanglePoints.push(arrayFirst[0])
+        rectanglePoints.push(arrayFirst[1] - temp_y)
+
+        rectangleColors.push(color)
+        rectangleColors.push(color)
+
+        arrayOfRectanglePoints.push(rectanglePoints)
+        arrayOfRectangleColors.push(rectangleColors)
+
         render()
         rectanglePoints = []
         rectangleColors = []
         arrayOfRectangleColors.pop()
         arrayOfRectanglePoints.pop()
       }
-
     }
-    
   })
 
   canvas.addEventListener('mouseup', (e) => {
@@ -400,49 +435,48 @@ window.onload = function main() {
     }
     if (shapeIdx == 1 && !isMoveMode) {
       getCoordinate(e)
-      var temp = Math.max((arrayFirst[0] - x), (arrayFirst[1] - y))
+      var temp = Math.max(arrayFirst[0] - x, arrayFirst[1] - y)
 
-      squarePoints.push(arrayFirst[0]);
-      squarePoints.push(arrayFirst[1]);
+      squarePoints.push(arrayFirst[0])
+      squarePoints.push(arrayFirst[1])
 
-      squarePoints.push(arrayFirst[0] + temp);
-      squarePoints.push(arrayFirst[1]);
+      squarePoints.push(arrayFirst[0] + temp)
+      squarePoints.push(arrayFirst[1])
 
-      squarePoints.push(arrayFirst[0] + temp);
-      squarePoints.push(arrayFirst[1] - temp);
+      squarePoints.push(arrayFirst[0] + temp)
+      squarePoints.push(arrayFirst[1] - temp)
 
-      squarePoints.push(arrayFirst[0]);
-      squarePoints.push(arrayFirst[1] - temp);
+      squarePoints.push(arrayFirst[0])
+      squarePoints.push(arrayFirst[1] - temp)
 
-      squareColors.push(color);
-      squareColors.push(color);
+      squareColors.push(color)
+      squareColors.push(color)
 
-      arrayOfSquarePoints.push(squarePoints);
-      arrayOfSquareColors.push(squareColors);
-    
+      arrayOfSquarePoints.push(squarePoints)
+      arrayOfSquareColors.push(squareColors)
+
       render()
-    }
-    else if (shapeIdx == 2 && !isMoveMode) {
+    } else if (shapeIdx == 2 && !isMoveMode) {
       var temp_x = (arrayFirst[0] - x) * -1
       var temp_y = arrayFirst[1] - y
-      rectanglePoints.push(arrayFirst[0]);
-      rectanglePoints.push(arrayFirst[1]);
+      rectanglePoints.push(arrayFirst[0])
+      rectanglePoints.push(arrayFirst[1])
 
-      rectanglePoints.push(arrayFirst[0] + temp_x);
-      rectanglePoints.push(arrayFirst[1]);
+      rectanglePoints.push(arrayFirst[0] + temp_x)
+      rectanglePoints.push(arrayFirst[1])
 
-      rectanglePoints.push(arrayFirst[0] + temp_x);
-      rectanglePoints.push(arrayFirst[1] - temp_y);
+      rectanglePoints.push(arrayFirst[0] + temp_x)
+      rectanglePoints.push(arrayFirst[1] - temp_y)
 
-      rectanglePoints.push(arrayFirst[0]);
-      rectanglePoints.push(arrayFirst[1] - temp_y);
+      rectanglePoints.push(arrayFirst[0])
+      rectanglePoints.push(arrayFirst[1] - temp_y)
 
-      rectangleColors.push(color);
-      rectangleColors.push(color);
+      rectangleColors.push(color)
+      rectangleColors.push(color)
 
-      arrayOfRectanglePoints.push(rectanglePoints);
-      arrayOfRectangleColors.push(rectangleColors);
-    
+      arrayOfRectanglePoints.push(rectanglePoints)
+      arrayOfRectangleColors.push(rectangleColors)
+
       render()
     }
   })
@@ -528,13 +562,13 @@ function render() {
   // START: Draw Square
   squarePoints = []
   for (var j = 0; j < arrayOfSquarePoints.length; j++) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquarePoints[j]));
-    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId);
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquareColors[j]));
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId)
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquarePoints[j]))
+    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId)
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfSquareColors[j]))
     if (arrayOfSquarePoints[j].length != 0) {
       for (var i = 0; i < arrayOfSquarePoints[j].length / 4 - 1; i++) {
-        gl.drawArrays(gl.LINE_LOOP, 4 * i, 4);
+        gl.drawArrays(gl.LINE_LOOP, 4 * i, 4)
       }
     }
   }
@@ -543,13 +577,13 @@ function render() {
   // START: Draw Rectangle
   rectanglePoints = []
   for (var j = 0; j < arrayOfRectanglePoints.length; j++) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfRectanglePoints[j]));
-    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId);
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfRectangleColors[j]));
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId)
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfRectanglePoints[j]))
+    gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId)
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(arrayOfRectangleColors[j]))
     if (arrayOfRectanglePoints[j].length != 0) {
       for (var i = 0; i < arrayOfRectanglePoints[j].length / 4 - 1; i++) {
-        gl.drawArrays(gl.LINE_LOOP, 4 * i, 4);
+        gl.drawArrays(gl.LINE_LOOP, 4 * i, 4)
       }
     }
   }
@@ -653,52 +687,53 @@ const saveFile = () => {
     currNumPoly,
     arrPolygonPoints,
     arrPolygonColors,
-    arrNumPoly
-  };
-  downloadFile(JSON.stringify(data));
-};
+    arrNumPoly,
+  }
+  downloadFile(JSON.stringify(data))
+}
 
-const downloadFile = (content, filename = "File_Grafkom.json", contentType = "json") => {
-  const a = document.createElement("a");
-  const file = new Blob([content], { type: contentType });
-  a.href = URL.createObjectURL(file);
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(a.href);
-};
+const downloadFile = (
+  content,
+  filename = 'File_Grafkom.json',
+  contentType = 'json'
+) => {
+  const a = document.createElement('a')
+  const file = new Blob([content], { type: contentType })
+  a.href = URL.createObjectURL(file)
+  a.download = filename
+  a.click()
+  URL.revokeObjectURL(a.href)
+}
 
 // Load File
 const loadFile = (e) => {
-  const file = e.target.files[0];
-  var reader = new FileReader();
-  reader.addEventListener("load", function (e) {
-    let data = e.target.result;
-    data = JSON.parse(data);
-    
+  const file = e.target.files[0]
+  var reader = new FileReader()
+  reader.addEventListener('load', function (e) {
+    let data = e.target.result
+    data = JSON.parse(data)
+
     // Data Line
-    linePoints = data.linePoints,
-    lineColors = data.lineColors,
-
-    // Data Square
-    squareColors = data.squareColors ,
-    squarePoints = data.squarePoints,
-    arrayOfSquareColors = data.arrayOfSquareColors,
-    arrayOfSquarePoints = data.arrayOfSquarePoints,
-
-    // Data Rectangle
-    rectanglePoints = data.rectanglePoints,
-    rectangleColors = data.rectangleColors,
-    arrayOfRectanglePoints = data.arrayOfRectanglePoints,
-    arrayOfRectangleColors = data.arrayOfRectangleColors,
-
-    // Data Polygon
-    polygonPoints = data.polygonPoints,
-    polygonColors = data.polygonColors,
-    currNumPoly = data.currNumPoly,
-    arrPolygonPoints = data.arrPolygonPoints,
-    arrPolygonColors = data.arrPolygonColors,
-    arrNumPoly = data.arrNumPoly
-    render();
-  });
-  reader.readAsBinaryString(file);
-};
+    ;(linePoints = data.linePoints),
+      (lineColors = data.lineColors),
+      // Data Square
+      (squareColors = data.squareColors),
+      (squarePoints = data.squarePoints),
+      (arrayOfSquareColors = data.arrayOfSquareColors),
+      (arrayOfSquarePoints = data.arrayOfSquarePoints),
+      // Data Rectangle
+      (rectanglePoints = data.rectanglePoints),
+      (rectangleColors = data.rectangleColors),
+      (arrayOfRectanglePoints = data.arrayOfRectanglePoints),
+      (arrayOfRectangleColors = data.arrayOfRectangleColors),
+      // Data Polygon
+      (polygonPoints = data.polygonPoints),
+      (polygonColors = data.polygonColors),
+      (currNumPoly = data.currNumPoly),
+      (arrPolygonPoints = data.arrPolygonPoints),
+      (arrPolygonColors = data.arrPolygonColors),
+      (arrNumPoly = data.arrNumPoly)
+    render()
+  })
+  reader.readAsBinaryString(file)
+}
