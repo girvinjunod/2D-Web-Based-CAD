@@ -351,11 +351,15 @@ window.onload = function main() {
       getCoordinate(e)
       getClosestPointFrom(x, y)
     }
-    if ((shapeIdx == 1 || shapeIdx == 2) && !isMoveMode) {
+    if ((shapeIdx == 0 || shapeIdx == 1 || shapeIdx == 2) && !isMoveMode) {
       arrayFirst = []
       getCoordinate(e)
       arrayFirst.push(x)
       arrayFirst.push(y)
+
+      if (shapeIdx == 0) {
+        linePoints.push(x, y, x, y)
+      }
     }
   })
 
@@ -365,6 +369,13 @@ window.onload = function main() {
     }
     if (mouseClick && !isMoveMode) {
       getCoordinate(e)
+      if (shapeIdx == 0) {
+        let n = linePoints.length
+        linePoints[n - 2] = x
+        linePoints[n - 1] = y
+        render()
+      }
+
       if (shapeIdx == 1) {
         var temp = Math.max(arrayFirst[0] - x, arrayFirst[1] - y)
 
@@ -433,6 +444,15 @@ window.onload = function main() {
       if (selectedMoveShapeIdx === 3) movePolygonPoints()
       render()
     }
+
+    if (shapeIdx == 0) {
+      getCoordinate(e)
+      let n = linePoints.length
+      linePoints[n - 2] = x
+      linePoints[n - 1] = y
+      render()
+    }
+
     if (shapeIdx == 1 && !isMoveMode) {
       getCoordinate(e)
       var temp = Math.max(arrayFirst[0] - x, arrayFirst[1] - y)
@@ -486,12 +506,12 @@ window.onload = function main() {
     if (!isMoveMode) {
       getCoordinate(e)
       if (shapeIdx == 0) {
-        console.log(`Current X: ${x}`)
-        console.log(`Current Y: ${y}`)
-        linePoints.push(x, y, x + size, y)
-        console.log(`Line Points: ${linePoints}`)
-        lineColors.push(color)
-        console.log(`Line Colors: ${lineColors}`)
+        // console.log(`Current X: ${x}`)
+        // console.log(`Current Y: ${y}`)
+        // linePoints.push(x, y, x + size, y)
+        // console.log(`Line Points: ${linePoints}`)
+        // lineColors.push(color)
+        // console.log(`Line Colors: ${lineColors}`)
       } else if (shapeIdx == 3) {
         //polygon
         let numPoly = parseInt(document.getElementById('number-nodes').value)
@@ -714,25 +734,28 @@ const loadFile = (e) => {
     data = JSON.parse(data)
 
     // Data Line
-    ;(linePoints = data.linePoints),
-      (lineColors = data.lineColors),
-      // Data Square
-      (squareColors = data.squareColors),
-      (squarePoints = data.squarePoints),
-      (arrayOfSquareColors = data.arrayOfSquareColors),
-      (arrayOfSquarePoints = data.arrayOfSquarePoints),
-      // Data Rectangle
-      (rectanglePoints = data.rectanglePoints),
-      (rectangleColors = data.rectangleColors),
-      (arrayOfRectanglePoints = data.arrayOfRectanglePoints),
-      (arrayOfRectangleColors = data.arrayOfRectangleColors),
-      // Data Polygon
-      (polygonPoints = data.polygonPoints),
-      (polygonColors = data.polygonColors),
-      (currNumPoly = data.currNumPoly),
-      (arrPolygonPoints = data.arrPolygonPoints),
-      (arrPolygonColors = data.arrPolygonColors),
-      (arrNumPoly = data.arrNumPoly)
+    linePoints = data.linePoints
+    lineColors = data.lineColors
+
+    // Data Square
+    squareColors = data.squareColors
+    squarePoints = data.squarePoints
+    arrayOfSquareColors = data.arrayOfSquareColors
+    arrayOfSquarePoints = data.arrayOfSquarePoints
+
+    // Data Rectangle
+    rectanglePoints = data.rectanglePoints
+    rectangleColors = data.rectangleColors
+    arrayOfRectanglePoints = data.arrayOfRectanglePoints
+    arrayOfRectangleColors = data.arrayOfRectangleColors
+
+    // Data Polygon
+    polygonPoints = data.polygonPoints
+    polygonColors = data.polygonColors
+    currNumPoly = data.currNumPoly
+    arrPolygonPoints = data.arrPolygonPoints
+    arrPolygonColors = data.arrPolygonColors
+    arrNumPoly = data.arrNumPoly
     render()
   })
   reader.readAsBinaryString(file)
