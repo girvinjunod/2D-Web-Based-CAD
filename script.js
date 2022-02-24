@@ -374,6 +374,7 @@ window.onload = function main() {
       if (shapeIdx == 0) {
         lineMoveMode = ''
         linePoints.push(x, y, x, y)
+        lineColors.push(color)
       }
     }
   })
