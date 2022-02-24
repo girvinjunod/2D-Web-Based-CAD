@@ -400,6 +400,7 @@ window.onload = function main() {
           linePoints[n - 2] = x
           linePoints[n - 1] = y
         }
+        lineColors[lineColors.length - 1] = color
         render()
       }
 
