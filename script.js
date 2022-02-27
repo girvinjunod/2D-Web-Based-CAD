@@ -12,20 +12,24 @@ let isMoveMode = false // move mode
 let selectedMoveShapeIdx = -1 // closest shape to be moved
 let selectedMovePolygonIdx = -1 // closest polygon to be moved
 
+// init variable line
 let linePoints = []
 let lineColors = []
 
+// init variable square
 var squarePoints = []
 var squareColors = []
 var arrayOfSquarePoints = []
 var arrayOfSquareColors = []
 
+// init variable rectangle
 var rectanglePoints = []
 var rectangleColors = []
 var arrayOfRectanglePoints = []
 var arrayOfRectangleColors = []
 var arrayFirst = []
 
+// init variable polygon
 let polygonPoints = []
 let polygonColors = []
 let currNumPoly = 0
@@ -36,22 +40,25 @@ let arrNumPoly = []
 const MAX_NUM_VERTICES = 20000
 const CLOSEST_POINT_THRESHOLD = 0.02
 
+// resize canvas
 const resizeCanvas = (gl) => {
   gl.canvas.width = (9 / 12) * window.innerWidth
   gl.canvas.height = (9 / 12) * window.innerWidth
 }
 
+// get coordinate mouse
 const getCoordinate = (e) => {
   x = (2 * e.clientX) / canvas.width - 1
   y = (2 * (canvas.height - e.clientY)) / canvas.height - 1
 }
 
+// Get closest point to (x, y)
 const getClosestPointFrom = (x, y) => {
-  // Get closest point to (x, y)
   console.log(`Get Closest Point From: ${x}, ${y}`)
 
   let closestDistance = Infinity
 
+  // search objeck and node line
   for (let i = 0; i < linePoints.length; i += 2) {
     currPoint = [linePoints[i], linePoints[i + 1]]
     dx = Math.abs(currPoint[0] - x)
@@ -65,6 +72,7 @@ const getClosestPointFrom = (x, y) => {
     }
   }
 
+  // search objeck and node square
   for (let i = 0; i < arrayOfSquarePoints.length; i++) {
     for (let j = 0; j < arrayOfSquarePoints[i].length; j += 2) {
       currPoint = [arrayOfSquarePoints[i][j], arrayOfSquarePoints[i][j + 1]]
@@ -80,6 +88,7 @@ const getClosestPointFrom = (x, y) => {
     }
   }
 
+  // search objeck and node rectangle
   for (let i = 0; i < arrayOfRectanglePoints.length; i++) {
     for (let j = 0; j < arrayOfRectanglePoints[i].length; j += 2) {
       currPoint = [
@@ -98,6 +107,7 @@ const getClosestPointFrom = (x, y) => {
     }
   }
 
+  // search objeck and node polygon
   for (let i = 0; i < arrPolygonPoints.length; i++) {
     for (let j = 0; j < arrPolygonPoints[i].length; j += 2) {
       currPoint = [arrPolygonPoints[i][j], arrPolygonPoints[i][j + 1]]
@@ -114,6 +124,7 @@ const getClosestPointFrom = (x, y) => {
   }
 }
 
+// get candidate closest node
 const isCandidatePoint = (dx, dy, closestDistance) => {
   return (
     dx < CLOSEST_POINT_THRESHOLD &&
@@ -122,6 +133,7 @@ const isCandidatePoint = (dx, dy, closestDistance) => {
   )
 }
 
+// resize rectangle
 const moveRectangle = () => {
   if (selectedMovePointIdx == 0) {
     arrayOfRectanglePoints[selectedMoveRectangleIdx][selectedMovePointIdx] = x
@@ -158,6 +170,7 @@ const moveRectangle = () => {
   }
 }
 
+// get maximum absolute 2 number
 function Maximum2Value(A, B) {
   if (Math.abs(A) > Math.abs(B)) {
     return A
@@ -166,6 +179,7 @@ function Maximum2Value(A, B) {
   }
 }
 
+// resize square
 const moveSquare = () => {
   if (selectedMovePointIdx == 0) {
     var temp_x =
@@ -270,16 +284,19 @@ const moveSquare = () => {
   }
 }
 
+// move line
 const moveLines = () => {
   linePoints[selectedMovePointIdx] = x
   linePoints[selectedMovePointIdx + 1] = y
 }
 
+// move polygon
 const movePolygonPoints = () => {
   arrPolygonPoints[selectedMovePolygonIdx][selectedMovePointIdx] = x
   arrPolygonPoints[selectedMovePolygonIdx][selectedMovePointIdx + 1] = y
 }
 
+// change hex to rgb for coloring shape
 const hexToRgb = (hex) => {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
   return {
@@ -290,7 +307,6 @@ const hexToRgb = (hex) => {
 }
 
 window.onload = function main() {
-  // Only continue if WebGL is available and working
   if (gl === null) {
     alert(
       'Unable to initialize WebGL. Your browser or machine may not support it.'
@@ -300,24 +316,28 @@ window.onload = function main() {
   resizeCanvas(gl)
   window.addEventListener('resize', () => resizeCanvas(gl), false)
 
+  // color picker
   let colorSelector = document.getElementById('color-picker')
   colorSelector.addEventListener('change', (e) => {
     let { r, g, b } = hexToRgb(e.target.value)
     color = [r, g, b, 1.0, r, g, b, 1.0]
   })
 
+  // mode drawing
   let drawModeSelector = document.getElementById('draw-mode')
   drawModeSelector.addEventListener('change', (e) => {
     isMoveMode = !e.target.checked
     console.log(`Move mode: ${isMoveMode}`)
   })
 
+  // mode moving
   let moveModeSelector = document.getElementById('move-mode')
   moveModeSelector.addEventListener('change', (e) => {
     isMoveMode = e.target.checked
     console.log(`Move mode: ${isMoveMode}`)
   })
 
+  // shape selector dropdown
   let shapeSelector = document.getElementById('shape-selector')
   shapeSelector.addEventListener('change', (e) => {
     shapeIdx = e.target.value
@@ -327,18 +347,21 @@ window.onload = function main() {
     moveModeSelector.checked = false
   })
 
+  // save button
   let saveButton = document.getElementById('save')
   saveButton.addEventListener('click', saveFile)
 
+  // load button
   let loadButton = document.getElementById('load')
   loadButton.addEventListener('change', loadFile)
 
+  // clear button
   let clearButton = document.getElementById('clear-btn')
   clearButton.addEventListener('click', () => {
     location.reload()
   })
 
-  //Move object
+  // Mouse Down Listener
   canvas.addEventListener('mousedown', (e) => {
     mouseClick = true
     if (isMoveMode) {
@@ -359,11 +382,12 @@ window.onload = function main() {
     }
   })
 
+  // Mouse Move Listener
   canvas.addEventListener('mousemove', (e) => {
     if (mouseClick && isMoveMode) {
+      isMoved = true
       getCoordinate(e)
       if (selectedMoveShapeIdx === 0) moveLines()
-      if (selectedMoveShapeIdx === 1) moveSquare(squarePoints)
       if (selectedMoveShapeIdx === 2) moveRectangle(rectanglePoints)
       if (selectedMoveShapeIdx === 3) movePolygonPoints()
       render()
@@ -442,8 +466,16 @@ window.onload = function main() {
     }
   })
 
+  // Mouse Up Listener
   canvas.addEventListener('mouseup', (e) => {
     mouseClick = false
+
+    if (isMoveMode && isMoved) {
+      getCoordinate(e)
+      if (selectedMoveShapeIdx === 1) moveSquare(squarePoints)
+      if (selectedMoveShapeIdx === 2) moveRectangle(rectanglePoints)
+      render()
+    }
 
     if (!isMoveMode) {
       if (shapeIdx == 0) {
@@ -709,6 +741,7 @@ const saveFile = () => {
   downloadFile(JSON.stringify(data))
 }
 
+// Download file
 const downloadFile = (
   content,
   filename = 'File_Grafkom.json',
